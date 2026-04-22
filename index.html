@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>SE Team Dashboard · Sprout</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --mushroom-50:#fafaf9;--mushroom-100:#f4f4f2;--mushroom-200:#e8e8e4;
+  --mushroom-300:#d3d3cc;--mushroom-400:#b0b0a6;--mushroom-500:#8c8c80;
+  --mushroom-600:#6b6b60;--mushroom-700:#555550;--mushroom-800:#3d3d38;
+  --mushroom-900:#272724;--mushroom-950:#141412;
+  --kangkong-50:#f0faf0;--kangkong-100:#dcf5dc;--kangkong-200:#b8ecb8;
+  --kangkong-300:#86db86;--kangkong-400:#52c222;--kangkong-500:#2fa82f;
+  --kangkong-600:#228722;--kangkong-700:#1d6e1d;--kangkong-800:#165216;
+  --kangkong-900:#0e360e;--kangkong-950:#071807;
+  --blueberry-100:#dbeafe;--blueberry-500:#3b82f6;--blueberry-600:#2563eb;
+  --tomato-100:#fee2e2;--tomato-500:#ef4444;--tomato-600:#dc2626;
+  --mango-100:#fef9c3;--mango-500:#eab308;--mango-600:#ca8a04;
+  --carrot-100:#ffedd5;--carrot-500:#f97316;
+  --wintermelon-100:#ccfbf1;--wintermelon-600:#0d9488;
+  --lavender-100:#ede9fe;--lavender-600:#7c3aed;
+  --sb-bg:#0e360e;--sb-bg2:#165216;
+  --sb-text:rgba(255,255,255,.72);--sb-text-active:#fff;
+  --sb-section:rgba(255,255,255,.38);--sb-hover:rgba(255,255,255,.09);
+  --sb-active:rgba(255,255,255,.16);--sb-border:rgba(255,255,255,.1);
+  --sb-logo:#2fa82f;
+  --bg:var(--mushroom-100);--surface:#fff;--surface2:var(--mushroom-50);
+  --border:var(--mushroom-200);--text:var(--mushroom-950);--muted:var(--mushroom-500);
+  --subtle:var(--mushroom-400);--brand:var(--kangkong-600);--brand-bg:var(--kangkong-50);
+  --radius-sm:4px;--radius:8px;--radius-lg:12px;--radius-xl:16px;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.05);
+  --shadow:0 1px 4px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.05);
+  --shadow-md:0 4px 16px rgba(0,0,0,.12);
+  --sidebar-w:232px;
+}
+[data-theme="dark"]{
+  --bg:#0d1a0d;--surface:#162416;--surface2:#1e341e;
+  --border:#2a432a;--text:#e8f5e8;--muted:#6b9b6b;
+  --subtle:#4a7a4a;--brand:var(--kangkong-400);--brand-bg:rgba(46,168,46,.12);
+  --sb-bg:#071807;--sb-bg2:#0e360e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Rubik',system-ui,sans-serif;font-size:14px;min-height:100vh;transition:background .2s,color .2s}
+#login-screen{display:none;align-items:center;justify-content:center;min-height:100vh;padding:24px;background:var(--kangkong-950)}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:44px 40px;width:100%;max-width:420px;box-shadow:var(--shadow-md)}
+.sprout-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.logo-mark{width:38px;height:38px;background:var(--kangkong-600);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;flex-shrink:0}
+.logo-text{font-size:1.15rem;font-weight:700}.logo-sub{font-size:.78rem;color:var(--muted);margin-top:1px}
+.form-label{font-size:.78rem;font-weight:500;color:var(--muted);margin-bottom:5px;display:block}
+.form-input{width:100%;background:var(--surface2);border:1.5px solid var(--border);color:var(--text);padding:10px 13px;border-radius:var(--radius);font-size:.9rem;font-family:inherit;outline:none;transition:.15s}
+.form-input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(34,135,34,.12)}
+.btn-login{width:100%;background:var(--kangkong-600);color:#fff;border:none;padding:11px;border-radius:var(--radius);cursor:pointer;font-size:.92rem;font-weight:600;font-family:inherit;margin-top:18px;transition:.15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-login:hover{background:var(--kangkong-700)}.btn-login:disabled{opacity:.6;cursor:not-allowed}
+.btn-text-link{background:none;border:none;color:var(--kangkong-400);font-size:.8rem;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline;margin-top:12px;display:block;text-align:center}
+.login-error{color:var(--tomato-600);font-size:.8rem;margin-top:10px;padding:9px 12px;background:var(--tomato-100);border-radius:var(--radius-sm)}
+.login-success{color:var(--kangkong-700);font-size:.8rem;margin-top:10px;padding:9px 12px;background:var(--kangkong-50);border-radius:var(--radius-sm);border:1px solid var(--kangkong-200)}
+.login-spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+.otp-digits{display:flex;gap:8px;justify-content:center;margin:16px 0;flex-wrap:wrap}
+.otp-digit{width:44px;height:52px;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius);font-size:1.4rem;font-weight:700;text-align:center;color:var(--text);font-family:inherit;outline:none;transition:.15s}
+.otp-digit:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(34,135,34,.12)}
+.auth-mode-badge{display:inline-flex;align-items:center;gap:5px;font-size:.7rem;font-weight:600;padding:3px 9px;border-radius:20px;margin-bottom:16px}
+.auth-mode-badge.otp{background:var(--blueberry-100);color:var(--blueberry-600)}
+.auth-mode-badge.password{background:var(--mushroom-200);color:var(--mushroom-600)}
+#app{display:none}
+.app-shell{display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar-w);background:var(--sb-bg);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;overflow:hidden;z-index:30;transition:transform .25s ease}
+.sidebar-head{padding:16px;border-bottom:1px solid var(--sb-border);display:flex;align-items:center;gap:10px}
+.sb-logo-wrap{width:32px;height:32px;background:var(--sb-logo);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-logo-wrap svg{width:18px;height:18px;fill:#fff}
+.sb-title{font-size:.88rem;font-weight:700;color:#fff;line-height:1.2}
+.sb-subtitle{font-size:.68rem;color:var(--sb-text);margin-top:1px}
+.sidebar-nav{flex:1;overflow-y:auto;padding:8px 6px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent}
+.sidebar-nav::-webkit-scrollbar{width:4px}
+.sidebar-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
+.nav-section{padding:12px 10px 4px;font-size:.6rem;font-weight:700;color:var(--sb-section);text-transform:uppercase;letter-spacing:.1em}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;cursor:pointer;font-size:.83rem;font-weight:500;border-radius:var(--radius);color:var(--sb-text);transition:.12s;margin-bottom:1px;position:relative}
+.nav-item:hover{background:var(--sb-hover);color:var(--sb-text-active)}
+.nav-item.active{background:var(--sb-active);color:var(--sb-text-active);font-weight:600}
+.nav-item.active::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;background:var(--kangkong-400);border-radius:0 3px 3px 0}
+.nav-item .ico{font-size:.9rem;width:18px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--tomato-500);color:#fff;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:20px;min-width:18px;text-align:center;display:none}
+.sidebar-user{padding:12px;border-top:1px solid var(--sb-border)}
+.user-row{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--kangkong-600);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0}
+.user-name{font-size:.8rem;font-weight:600;color:#fff}
+.user-role{font-size:.68rem;color:var(--sb-text)}
+.btn-signout{width:100%;background:transparent;border:1px solid var(--sb-border);color:var(--sb-text);padding:5px;border-radius:var(--radius-sm);cursor:pointer;font-size:.74rem;font-family:inherit;transition:.12s}
+.btn-signout:hover{border-color:var(--tomato-500);color:#ff6b6b}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:29}
+.sidebar-overlay.open{display:block}
+@media(max-width:640px){
+  :root{--sidebar-w:220px}
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.mobile-open{transform:translateX(0)}
+  .main{margin-left:0!important}
+  .topbar{padding:0 12px}
+  .content{padding:12px}
+  .mobile-menu-btn{display:flex!important}
+  .two-col,.split-col,.trend-grid{grid-template-columns:1fr!important}
+  .scorecard-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))!important}
+  .login-card{padding:32px 22px}
+  .otp-digits{gap:6px}
+  .otp-digit{width:38px;height:48px;font-size:1.2rem}
+}
+@media(min-width:641px) and (max-width:1024px){
+  :root{--sidebar-w:210px}
+  .content{padding:18px}
+  .scorecard-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))!important}
+  .two-col,.split-col{grid-template-columns:1fr 1fr}
+  .trend-grid{grid-template-columns:1fr 1fr}
+}
+@media(min-width:1025px){.mobile-menu-btn{display:none!important}}
+.main{margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column;transition:margin-left .25s ease}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:10}
+.topbar h1{font-size:.98rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.mobile-menu-btn{display:none;background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 9px;border-radius:var(--radius-sm);cursor:pointer;font-size:1rem;font-family:inherit;margin-right:4px;align-items:center}
+.badge-role{font-size:.68rem;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.badge-manager{background:var(--blueberry-100);color:var(--blueberry-600)}
+.badge-se{background:var(--brand-bg);color:var(--brand)}
+.badge-ca{background:var(--lavender-100);color:var(--lavender-600)}
+.btn-icon{background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 9px;border-radius:var(--radius-sm);cursor:pointer;font-size:.85rem;font-family:inherit;transition:.12s}
+.btn-icon:hover{border-color:var(--brand);color:var(--brand)}
+.content{padding:24px;flex:1;max-width:1400px;width:100%}
+.page{display:none}.page.active{display:block}
+.scorecard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:22px}
+.sc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;display:block;min-width:0;transition:.15s}
+.sc-card:hover{box-shadow:var(--shadow)}
+.sc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--sc-color,var(--border))}
+.sc-icon{font-size:1.05rem;margin-bottom:8px;display:block}
+.sc-label{font-size:.67rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.sc-value{font-size:1.5rem;font-weight:700;line-height:1;color:var(--sc-color,var(--text))}
+.sc-sub{font-size:.7rem;color:var(--muted);margin-top:4px}
+.sc-green{--sc-color:var(--kangkong-600)}.sc-blue{--sc-color:var(--blueberry-600)}
+.sc-yellow{--sc-color:var(--mango-600)}.sc-red{--sc-color:var(--tomato-600)}
+.sc-teal{--sc-color:var(--wintermelon-600)}.sc-purple{--sc-color:var(--lavender-600)}
+.split-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+.split-col .section-card{margin-bottom:0}
+.section-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:18px;box-shadow:var(--shadow-sm);overflow:hidden}
+.section-header{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.section-header h3{font-size:.88rem;font-weight:700}.section-meta{font-size:.74rem;color:var(--muted)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{background:var(--surface2);padding:8px 14px;text-align:left;font-size:.68rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}tr:hover td{background:var(--surface2)}
+.empty-state{padding:36px;text-align:center;color:var(--muted);font-size:.84rem}
+.chip{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:.7rem;font-weight:600;white-space:nowrap}
+.chip-p1{background:var(--tomato-100);color:var(--tomato-600)}.chip-p2{background:var(--carrot-100);color:var(--carrot-500)}
+.chip-p3{background:var(--blueberry-100);color:var(--blueberry-600)}.chip-p4{background:var(--mushroom-200);color:var(--mushroom-600)}
+.chip-green{background:var(--kangkong-50);color:var(--kangkong-700)}.chip-yellow{background:var(--mango-100);color:var(--mango-600)}
+.chip-red{background:var(--tomato-100);color:var(--tomato-600)}.chip-blue{background:var(--blueberry-100);color:var(--blueberry-600)}
+.chip-teal{background:var(--wintermelon-100);color:var(--wintermelon-600)}.chip-gray{background:var(--mushroom-200);color:var(--mushroom-600)}
+.chip-purple{background:var(--lavender-100);color:var(--lavender-600)}
+[data-theme="dark"] .chip-p1{background:rgba(239,68,68,.2)}[data-theme="dark"] .chip-p2{background:rgba(249,115,22,.2)}
+[data-theme="dark"] .chip-p3{background:rgba(59,130,246,.2)}[data-theme="dark"] .chip-p4{background:rgba(140,140,128,.2)}
+[data-theme="dark"] .chip-green{background:rgba(34,135,34,.2);color:var(--kangkong-300)}
+[data-theme="dark"] .chip-blue{background:rgba(59,130,246,.2);color:#93c5fd}
+[data-theme="dark"] .chip-yellow{background:rgba(234,179,8,.2);color:#fde68a}
+[data-theme="dark"] .chip-teal{background:rgba(13,148,136,.2);color:#99f6e4}
+[data-theme="dark"] .chip-purple{background:rgba(124,58,237,.2);color:#c4b5fd}
+[data-theme="dark"] .chip-gray{background:rgba(140,140,128,.2);color:var(--muted)}
+[data-theme="dark"] .chip-red{background:rgba(239,68,68,.2);color:#fca5a5}
+.flag-banner{border-radius:var(--radius-lg);padding:13px 18px;margin-bottom:18px;display:flex;align-items:flex-start;gap:13px}
+.flag-banner.yellow{background:var(--mango-100);border:1px solid #fde68a}
+[data-theme="dark"] .flag-banner.yellow{background:rgba(234,179,8,.1);border-color:rgba(234,179,8,.3)}
+.flag-banner .ico{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.flag-banner h4{font-size:.85rem;font-weight:700;color:var(--mango-600);margin-bottom:2px}
+.flag-banner p{font-size:.77rem;color:var(--muted);line-height:1.5}
+.jira-widget{display:flex;flex-direction:column}
+.jira-row{padding:11px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;transition:.12s}
+.jira-row:last-child{border-bottom:none}.jira-row:hover{background:var(--surface2)}
+.jira-row.flagged{border-left:3px solid var(--mango-500)}.jira-row.flagged-linked{border-left:3px solid var(--blueberry-500)}
+.jira-row.overdue{border-left:3px solid var(--tomato-500);background:rgba(239,68,68,.04)}
+.jira-row.due-today{border-left:3px solid var(--mango-500);background:rgba(234,179,8,.04)}
+.jira-row.due-soon{border-left:3px solid var(--carrot-500)}
+[data-theme="dark"] .jira-row.overdue{background:rgba(239,68,68,.08)}
+[data-theme="dark"] .jira-row.due-today{background:rgba(234,179,8,.08)}
+.jira-key{font-size:.82rem;font-weight:700;color:var(--brand);text-decoration:none;white-space:nowrap}
+.jira-key:hover{text-decoration:underline}
+.jira-summary{font-size:.83rem;font-weight:500;margin-bottom:5px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jira-meta{display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+.flag-pill{font-size:.67rem;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.flag-comment{background:var(--mango-100);color:var(--mango-600);border:1px solid #fde68a}
+.flag-linked{background:var(--blueberry-100);color:var(--blueberry-600);border:1px solid #bfdbfe}
+[data-theme="dark"] .flag-comment{background:rgba(234,179,8,.15);border-color:rgba(234,179,8,.3)}
+[data-theme="dark"] .flag-linked{background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.3)}
+.due-badge{font-size:.67rem;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.due-badge.overdue{background:var(--tomato-100);color:var(--tomato-600)}.due-badge.today{background:var(--mango-100);color:var(--mango-600)}.due-badge.soon{background:var(--carrot-100);color:var(--carrot-500)}
+.filter-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:11px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:var(--shadow-sm)}
+.filter-bar label{font-size:.75rem;font-weight:600;color:var(--muted);white-space:nowrap}
+.filter-select{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:var(--radius-sm);font-size:.8rem;font-family:inherit;outline:none;min-width:140px}
+.mini-spinner{width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--brand);border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0}
+.bar-chart-inner{padding:14px 18px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.bar-label{width:120px;color:var(--muted);font-size:.73rem;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;background:var(--mushroom-200);border-radius:4px;height:9px;overflow:hidden}
+[data-theme="dark"] .bar-track{background:var(--surface2)}
+.bar-fill{height:100%;border-radius:4px;transition:width .8s ease}
+.bar-val{width:52px;text-align:right;font-size:.72rem;font-weight:600;color:var(--muted);white-space:nowrap}
+.tis-pill{display:inline-flex;padding:2px 7px;border-radius:4px;font-size:.7rem;font-weight:600;white-space:nowrap}
+.tis-fast{background:var(--kangkong-50);color:var(--kangkong-700)}.tis-mid{background:var(--mango-100);color:var(--mango-600)}.tis-slow{background:var(--tomato-100);color:var(--tomato-600)}
+[data-theme="dark"] .tis-fast{background:rgba(34,135,34,.2);color:var(--kangkong-300)}
+[data-theme="dark"] .tis-mid{background:rgba(234,179,8,.2);color:#fde68a}
+[data-theme="dark"] .tis-slow{background:rgba(239,68,68,.2);color:#fca5a5}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+.burnout-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.burnout-name{width:80px;font-size:.77rem;font-weight:500;flex-shrink:0}
+.burnout-track{flex:1;background:var(--mushroom-200);border-radius:20px;height:10px;overflow:hidden}
+[data-theme="dark"] .burnout-track{background:var(--surface2)}
+.burnout-fill{height:100%;border-radius:20px}
+.burnout-pct{width:34px;font-size:.74rem;font-weight:700;text-align:right;flex-shrink:0}
+.insight-card{background:var(--surface2);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px;border-left:3px solid var(--border)}
+.insight-card.danger{border-left-color:var(--tomato-500)}.insight-card.warn{border-left-color:var(--mango-500)}.insight-card.ok{border-left-color:var(--kangkong-500)}
+.insight-title{font-size:.81rem;font-weight:700;margin-bottom:3px}.insight-body{font-size:.76rem;color:var(--muted);line-height:1.5}
+.improve-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.improve-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:15px;box-shadow:var(--shadow-sm)}
+.improve-card.flag-red{border-top:3px solid var(--tomato-500)}.improve-card.flag-yellow{border-top:3px solid var(--mango-500)}
+.ic-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.ic-title{font-size:.84rem;font-weight:700}.ic-meta{font-size:.72rem;color:var(--muted);margin-top:2px}
+.ic-stat-val{font-size:1.05rem;font-weight:700;text-align:right}.ic-stat-label{font-size:.67rem;color:var(--muted);text-align:right}
+.ic-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.ic-bar-label{width:88px;color:var(--muted);text-align:right;font-size:.7rem;flex-shrink:0}
+.ic-bar-track{flex:1;background:var(--mushroom-200);border-radius:3px;height:7px;overflow:hidden}
+[data-theme="dark"] .ic-bar-track{background:var(--surface2)}
+.ic-bar-fill{height:100%;border-radius:3px}.ic-bar-val{font-size:.7rem;font-weight:600;width:42px;text-align:right;color:var(--muted)}
+.inc-row{display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-bottom:1px solid var(--border);transition:.12s}
+.inc-row:last-child{border-bottom:none}.inc-row:hover{background:var(--surface2)}
+.inc-key-col{flex-shrink:0;width:90px}.inc-body{flex:1;min-width:0}
+.inc-feedback{font-size:.82rem;margin-top:5px;color:var(--muted);line-height:1.5;font-style:italic}
+.inc-doc-link{font-size:.73rem;color:var(--brand);text-decoration:none}
+.ref-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.ref-group-pills{display:flex;gap:6px;flex-wrap:wrap}
+.ref-group-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:.76rem;font-weight:500;font-family:inherit;cursor:pointer;transition:.12s}
+.ref-group-btn.active{background:var(--brand-bg);border-color:var(--kangkong-200);color:var(--brand);font-weight:600}
+.ref-group-count{background:var(--mushroom-200);color:var(--mushroom-600);font-size:.65rem;font-weight:700;padding:0 5px;border-radius:20px;min-width:18px;text-align:center}
+.ref-section{margin-bottom:24px}
+.ref-section-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.ref-section-title{font-size:.88rem;font-weight:700}
+.ref-section-count{font-size:.72rem;font-weight:600;color:var(--muted);background:var(--mushroom-200);padding:1px 7px;border-radius:20px}
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.ref-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;display:flex;align-items:flex-start;gap:13px;text-decoration:none;transition:.15s;box-shadow:var(--shadow-sm)}
+.ref-card:hover{border-color:var(--brand);box-shadow:var(--shadow);transform:translateY(-1px)}
+.ref-icon-wrap{width:36px;height:36px;border-radius:var(--radius);background:var(--brand-bg);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.ref-name{font-size:.86rem;font-weight:600;color:var(--text);margin-bottom:2px}.ref-desc{font-size:.74rem;color:var(--muted);line-height:1.4}
+.ref-tag{display:inline-flex;margin-top:6px;font-size:.67rem;font-weight:600;color:var(--brand);background:var(--brand-bg);padding:1px 7px;border-radius:20px}
+.btn-primary{background:var(--kangkong-600);color:#fff;border:none;padding:7px 14px;border-radius:var(--radius-sm);cursor:pointer;font-size:.8rem;font-weight:600;font-family:inherit;transition:.12s}
+.btn-primary:hover{background:var(--kangkong-700)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--muted);padding:7px 14px;border-radius:var(--radius-sm);cursor:pointer;font-size:.8rem;font-family:inherit;transition:.12s}
+.btn-outline:hover{border-color:var(--brand);color:var(--brand)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.filters select,.filters input{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:var(--radius-sm);font-size:.8rem;font-family:inherit;outline:none;transition:.12s}
+.action-link{color:var(--brand);text-decoration:none;font-weight:600;font-size:.8rem}.action-link:hover{text-decoration:underline}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);width:500px;max-width:100%;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-md)}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--surface);z-index:1}
+.modal-head h3{font-size:.93rem;font-weight:700}.modal-body{padding:20px}
+.modal-foot{padding:13px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}
+.form-row{margin-bottom:13px}
+.cfg-tabs{display:flex;gap:4px;margin-bottom:18px}
+.cfg-tab{padding:6px 13px;border-radius:var(--radius-sm);cursor:pointer;font-size:.79rem;border:1px solid transparent;color:var(--muted);font-family:inherit;transition:.12s;background:transparent}
+.cfg-tab.active{background:var(--brand-bg);border-color:var(--kangkong-200);color:var(--brand);font-weight:600}
+.form-input-sm{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:var(--radius-sm);font-size:.82rem;outline:none;font-family:inherit}
+.auth-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);margin-bottom:14px}
+.auth-toggle-label{font-size:.84rem;font-weight:600}
+.auth-toggle-sub{font-size:.74rem;color:var(--muted);margin-top:2px}
+.toggle-wrap{display:flex;align-items:center;gap:10px}
+.toggle-track{position:relative;width:40px;height:22px;background:var(--mushroom-300);border-radius:11px;cursor:pointer;transition:.2s;flex-shrink:0}
+.toggle-track.on{background:var(--kangkong-600)}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:.2s;pointer-events:none}
+.toggle-track.on .toggle-thumb{transform:translateX(18px)}
+.toggle-val{font-size:.78rem;font-weight:600;color:var(--muted);min-width:56px}
+.toggle-val.on{color:var(--kangkong-600)}
+.vol-compare{display:flex;align-items:flex-end;gap:20px;padding:8px 0}
+.vol-bar-group{display:flex;flex-direction:column;align-items:center;gap:4px}
+.vol-bar{width:44px;border-radius:4px 4px 0 0;min-height:4px}
+.vol-label{font-size:.7rem;color:var(--muted)}.vol-count{font-size:.82rem;font-weight:700}
+.recent-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--border)}
+.recent-row:last-child{border-bottom:none}
+.label-chip-row{display:flex;flex-wrap:wrap;gap:6px;padding:4px 0}
+.ovw-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.ovw-month{font-size:1.05rem;font-weight:700}.ovw-refresh{font-size:.72rem;color:var(--muted)}
+.ovw-loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:60px 20px;color:var(--muted);font-size:.84rem}
+.trend-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.trend-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 22px;box-shadow:var(--shadow-sm)}
+.trend-panel-title{font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.trend-panel-avg{font-size:.78rem;color:var(--muted);margin-bottom:12px}
+.signal-pill{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:.67rem;font-weight:700;white-space:nowrap}
+.signal-ok{background:var(--kangkong-50);color:var(--kangkong-700)}.signal-warn{background:var(--mango-100);color:var(--mango-600)}.signal-danger{background:var(--tomato-100);color:var(--tomato-600)}
+[data-theme="dark"] .signal-ok{background:rgba(34,135,34,.2);color:var(--kangkong-300)}
+[data-theme="dark"] .signal-warn{background:rgba(234,179,8,.2);color:#fde68a}
+[data-theme="dark"] .signal-danger{background:rgba(239,68,68,.2);color:#fca5a5}
+.prod-input{width:100%;background:var(--surface2);border:1.5px solid var(--border);color:var(--text);padding:8px 10px;border-radius:var(--radius-sm);font-family:inherit;font-size:.82rem;outline:none;transition:.15s}
+.prod-input:focus{border-color:var(--brand)}
+.rto-radio-group{display:flex;gap:10px;flex-wrap:wrap}
+.rto-radio-label{display:flex;align-items:center;gap:7px;padding:9px 14px;border:1.5px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:.83rem;font-weight:500;transition:.15s;background:var(--surface2)}
+.rto-radio-label:hover{border-color:var(--brand);background:var(--brand-bg)}
+.rto-radio-label input[type=radio]{accent-color:var(--brand);width:15px;height:15px}
+.rto-radio-label.selected{border-color:var(--brand);background:var(--brand-bg);color:var(--brand);font-weight:600}
+/* CA Team view */
+.ca-scorecard-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin-bottom:22px}
+@media(max-width:1100px){.ca-scorecard-grid{grid-template-columns:repeat(4,1fr)}}@media(max-width:700px){.ca-scorecard-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.ca-scorecard-grid{grid-template-columns:repeat(2,1fr)}}
+.ca-sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+.ca-sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--ca-bar,var(--border))}
+.ca-sc-label{font-size:.67rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ca-sc-val{font-size:1.7rem;font-weight:700;line-height:1;color:var(--ca-color,var(--text))}
+.ca-sc-sub{font-size:.68rem;color:var(--subtle);margin-top:5px;line-height:1.3}
+.ca-filter-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:var(--shadow-sm)}
+.ca-filter-bar label{font-size:.75rem;font-weight:600;color:var(--muted)}
+.ca-filter-sel{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:var(--radius-sm);font-size:.8rem;font-family:inherit;outline:none;min-width:110px;cursor:pointer}
+.ca-filter-sel:focus{border-color:var(--brand)}
+.ca-charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:700px){.ca-charts-grid{grid-template-columns:1fr}}
+.ca-charts-grid .full{grid-column:1/-1}
+.ca-chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow-sm)}
+.ca-chart-title{font-size:.88rem;font-weight:700;margin-bottom:2px}
+.ca-chart-sub{font-size:.73rem;color:var(--muted);margin-bottom:14px}
+.ca-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ca-bar-label{width:130px;font-size:.74rem;color:var(--muted);text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ca-bar-track{flex:1;background:var(--mushroom-200);border-radius:4px;height:9px;overflow:hidden}
+[data-theme="dark"] .ca-bar-track{background:var(--surface2)}
+.ca-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.ca-bar-val{font-size:.74rem;font-weight:700;color:var(--muted);width:32px;text-align:right;flex-shrink:0}
+.ca-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
+.ca-leg{display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--muted)}
+.ca-leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ca-stat-footer{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;align-items:baseline;gap:6px}
+.ca-stat-footer .big{font-size:1.1rem;font-weight:700}
+.ca-stat-footer .small{font-size:.72rem;color:var(--muted)}
+.ca-insight-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.ca-insight{background:var(--surface2);border-radius:var(--radius);padding:10px 14px;display:flex;align-items:center;gap:8px;flex:1;min-width:180px;border-left:3px solid var(--border)}
+.ca-insight.warn{border-left-color:var(--mango-500)}.ca-insight.danger{border-left-color:var(--tomato-500)}
+.ca-insight.ok{border-left-color:var(--kangkong-500)}.ca-insight.info{border-left-color:var(--blueberry-500)}
+.ca-insight-ico{font-size:.9rem;flex-shrink:0}
+.ca-insight-text{font-size:.78rem;color:var(--muted);line-height:1.4}
+.ca-insight-text strong{color:var(--text);font-weight:600}
+.ca-loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:60px;color:var(--muted);font-size:.84rem}
+.se-wl-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.se-wl-name{width:100px;font-size:.78rem;font-weight:500;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.se-wl-track{flex:1;background:var(--mushroom-200);border-radius:4px;height:12px;overflow:hidden;position:relative}
+[data-theme="dark"] .se-wl-track{background:var(--surface2)}
+.se-wl-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.se-wl-count{font-size:.74rem;font-weight:700;width:36px;text-align:right;flex-shrink:0}
+.se-wl-threshold{position:absolute;top:0;bottom:0;width:1.5px;background:var(--tomato-500);opacity:.7}
+@keyframes spin{to{transform:rotate(360deg)}}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--mushroom-300);border-radius:10px}
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:var(--surface2)}
+
+/* Combined live panel */
+.live-panel{overflow:hidden}
+.live-two-col{display:flex;align-items:stretch;min-width:0}
+.live-col-left{flex:3;padding:14px 18px;min-width:0}
+.live-col-right{flex:2;padding:14px 18px;min-width:0;border-left:1px solid var(--border)}
+.live-col-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.live-col-title{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.live-col-meta{font-size:.7rem;color:var(--subtle);margin-top:3px}
+.live-col-note{font-size:.69rem;color:var(--muted);margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
+/* SE snap tiles */
+.se-snap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.se-snap-tile{background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius-md);padding:10px 10px 8px;position:relative;overflow:hidden}
+.se-snap-top{height:2.5px;position:absolute;top:0;left:0;right:0}
+.se-snap-name{font-size:.72rem;color:var(--muted);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.se-snap-score{font-size:1.4rem;font-weight:700;line-height:1;margin-bottom:2px}
+.se-snap-sub{font-size:.67rem;color:var(--subtle);margin-bottom:6px}
+.se-snap-bar-track{background:var(--mushroom-200);border-radius:3px;height:4px;overflow:hidden}
+[data-theme="dark"] .se-snap-bar-track{background:var(--surface)}
+.se-snap-bar-fill{height:100%;border-radius:3px;transition:width .8s ease}
+/* On Hold pending rows */
+.pending-rows{display:flex;flex-direction:column;gap:9px}
+.pending-row{display:flex;align-items:center;gap:10px}
+.pending-label{font-size:.78rem;font-weight:600;width:52px;flex-shrink:0}
+.pending-track{flex:1;background:var(--mushroom-200);border-radius:3px;height:7px;overflow:hidden}
+[data-theme="dark"] .pending-track{background:var(--surface2)}
+.pending-fill{height:100%;border-radius:3px}
+.pending-count{font-size:.78rem;font-weight:700;width:22px;text-align:right;flex-shrink:0}
+.pending-pct{font-size:.7rem;color:var(--muted);width:30px;text-align:right;flex-shrink:0}
+</style>
+</head>
+<body>
+<script>
+(function(){var t=localStorage.getItem('spr-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();
+
+var _DEV_USER=null;
+var CONFIG={MIDDLEWARE_URL:'https://script.google.com/a/macros/sprout.ph/s/AKfycbxtxb7wHbuCd9lpy5TovSXr40nG-mA0j7GZX0A-ogSm6iHGT_3TZCnHm4AcOphjuaxAZg/exec',ST_PROJECT:'ST',TIS_THRESHOLDS:{fast:24,slow:72},OVERLOAD_SLA:25,STATUS_ORDER:['To Do','In Progress','On Hold','For Peer Review','For Checking','For Product Team','Done','Archived'],REFERENCE_LINKS:[],AUTH_MODE:'password'};
+
+var S={user:null,role:null,currentPage:null,pendingOtpEmail:null,stTickets:[],flaggedTickets:[],incidents:[],incidentYears:[],incidentMonthWeeks:[],backlog:{backend:[],investigation:[]},analytics:{},tisData:null,stats:null,statsFilters:{period:'all',member:'all'},availablePeriods:[],availableMembers:[],mgrOverview:null,mgrOverviewLoadedAt:null};
+var _prod={workLog:null,rto:null};
+var _seTISStats=null;
+var _incFilter='all';
+var _baseline=null;
+var _ca={scorecard:null,charts:null,onHoldPending:{},filters:{year:'',month:'all',week:'all'}};
+var _seDailyScores=null;
+var _snapshotRefreshTimer=null;
+
+// ── Role helpers ───────────────────────────────────────────────
+function isManager(){return(S.role||'').toLowerCase().includes('manager');}
+function isCA(){var r=(S.role||'').toLowerCase();return r.includes('ca')&&!isManager();}
+
+// ── Baseline helpers ──────────────────────────────────────────
+function fetchBaseline(bust){
+  var p={action:'getbaseline'};if(bust)p.bust=Date.now();
+  return fetch(mwUrl(p)).then(function(r){return r.json();}).then(function(d){_baseline=d;}).catch(function(e){console.warn('Baseline:',e.message);});
+}
+function getThreshold(){
+  if(_baseline&&!_baseline.fallback)return _baseline;
+  return{mean:15,stddev:5,threshold:20,warnThreshold:17.5,fallback:true};
+}
+function scoreStatus(score){var t=getThreshold();return score>=t.threshold?'overloaded':score>=t.warnThreshold?'high':'ok';}
+function scoreColor(score){var s=scoreStatus(score);return s==='overloaded'?'#E24B4A':s==='high'?'#EF9F27':'#1D9E75';}
+
+function mwUrl(p){return CONFIG.MIDDLEWARE_URL+'?'+Object.keys(p).map(function(k){return k+'='+encodeURIComponent(p[k]);}).join('&');}
+function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('spr-theme',n);var tb=document.getElementById('theme-btn');if(tb)tb.textContent=n==='dark'?'☀️':'🌙';}
+function fmtDate(s){if(!s)return'—';try{var d=new Date(s),now=new Date(),diff=Math.floor((now-d)/60000);if(diff<60)return diff+'m ago';if(diff<1440)return Math.floor(diff/60)+'h ago';return Math.floor(diff/1440)+'d ago';}catch(e){return s;}}
+function fmtHours(ms){if(!ms||ms<=0)return'0h';var h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000);if(h>=24){var d=Math.floor(h/24),rh=h%24;return rh?d+'d '+rh+'h':d+'d';}return m?h+'h '+m+'m':h+'h';}
+function fmtMins(mins){if(!mins||mins<=0)return'0h';var d=Math.floor(mins/1440),h=Math.floor((mins%1440)/60),m=Math.floor(mins%60);if(d>0)return d+'d '+h+'h';if(h>0)return h+'h '+m+'m';return m+'m';}
+function fmtMinsHM(mins){if(mins===null||mins===undefined||mins<0)return'—';var h=Math.floor(mins/60),m=mins%60;return h+'h '+(m<10?'0'+m:m)+'m';}
+function fmtTime(ts){if(!ts)return'—';return new Date(ts).toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'});}
+function fmt2dp(v){return(Math.round(v*100)/100).toFixed(2);}
+function prioChip(p){var pl=(p||'').toLowerCase();var cls=pl.indexOf('very urgent')!==-1||pl==='p1'||pl==='highest'?'chip-p1':pl.indexOf('urgent')!==-1||pl==='p2'||pl==='high'?'chip-p2':pl.indexOf('standard')!==-1||pl==='p3'||pl==='medium'?'chip-p3':'chip-p4';return'<span class="chip '+cls+'">'+p+'</span>';}
+function statusChip(s){if(s==='For Checking'||s==='Ready for Checking')return'<span class="chip chip-yellow">🔍 '+s+'</span>';if(s==='On Hold')return'<span class="chip chip-red">⏸ '+s+'</span>';if(s==='Done'||s==='Resolved')return'<span class="chip chip-green">✅ '+s+'</span>';if(s==='In Progress')return'<span class="chip chip-blue">▶ '+s+'</span>';if(s==='For Peer Review')return'<span class="chip chip-purple">👀 '+s+'</span>';return'<span class="chip chip-gray">'+s+'</span>';}
+function tisCls(ms){var h=ms/3600000;return h<CONFIG.TIS_THRESHOLDS.fast?'tis-fast':h<CONFIG.TIS_THRESHOLDS.slow?'tis-mid':'tis-slow';}
+function dueBadge(t){if(t.isOverdue)return'<span class="due-badge overdue">⚠️ Overdue '+t.dueDate+'</span>';if(t.isDueToday)return'<span class="due-badge today">📅 Due Today</span>';if(t.isDueSoon)return'<span class="due-badge soon">⏰ Due '+t.dueDate+'</span>';if(t.dueDate)return'<span style="font-size:.71rem;color:var(--subtle)">📅 '+t.dueDate+'</span>';return'';}
+function attentionCls(t){if(t.isOverdue)return'jira-row overdue';if(t.isDueToday)return'jira-row due-today';if(t.isDueSoon)return'jira-row due-soon';if(['P1','Highest','Very Urgent'].indexOf(t.priority)!==-1)return'jira-row overdue';if(['P2','High','Urgent'].indexOf(t.priority)!==-1)return'jira-row due-soon';return'jira-row';}
+function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]/g,'-');}
+function tagIcon(tag){var t=tag.toLowerCase();if(t.includes('sheet'))return'📊';if(t.includes('confluence'))return'📘';if(t.includes('tool'))return'⚙️';if(t.includes('drive'))return'📁';if(t.includes('report'))return'📋';if(t.includes('site')||t.includes('portal'))return'🌐';if(t.includes('azure'))return'☁️';return'🔗';}
+function getAnalytics(){return(S.analytics&&S.analytics.teamStats)?S.analytics.teamStats:demoAnalytics().teamStats;}
+function getTodayStr(){var now=new Date(),pht=new Date(now.getTime()+(8*60-now.getTimezoneOffset())*60000),mm=pht.getMonth()+1,dd=pht.getDate();return pht.getFullYear()+'-'+(mm<10?'0'+mm:mm)+'-'+(dd<10?'0'+dd:dd);}
+function getCurrentMonthPrefix(){return getTodayStr().slice(0,7);}
+function getCurrentYear(){return getTodayStr().slice(0,4);}
+function getLastFriday(){var d=new Date(),pht=new Date(d.getTime()+(8*60-d.getTimezoneOffset())*60000),dow=pht.getDay(),diff=dow>=5?dow-5:dow+2;pht.setDate(pht.getDate()-diff);var mm=pht.getMonth()+1,dd=pht.getDate();return pht.getFullYear()+'-'+(mm<10?'0'+mm:mm)+'-'+(dd<10?'0'+dd:dd);}
+function isFriday(){var d=new Date(),pht=new Date(d.getTime()+(8*60-d.getTimezoneOffset())*60000);return pht.getDay()===5;}
+function getTodaySession(){
+  if(!_prod.workLog||!_prod.workLog.entries)return null;
+  var today=getTodayStr();
+  function normDate(v){if(!v)return'';var s=v.toString().trim();if(/^\d{4}-\d{2}-\d{2}/.test(s))return s.slice(0,10);var d=new Date(s);if(!isNaN(d.getTime())){var mm=d.getMonth()+1,dd=d.getDate();return d.getFullYear()+'-'+(mm<10?'0'+mm:mm)+'-'+(dd<10?'0'+dd:dd);}return s;}
+  var entries=_prod.workLog.entries.filter(function(e){return e.email===S.user.email&&(normDate(e.sessionId)===today||normDate(e.date)===today);});
+  if(!entries.length)return null;
+  var sorted=entries.slice().sort(function(a,b){return a.timestamp.localeCompare(b.timestamp);});
+  var last=sorted[sorted.length-1];
+  var lastType=(last.entryType||'').toString().trim().toLowerCase();
+  var breakOuts=sorted.filter(function(e){return(e.entryType||'').trim().toLowerCase()==='break_out';}).length;
+  var breakIns=sorted.filter(function(e){return(e.entryType||'').trim().toLowerCase()==='break_in';}).length;
+  return{state:lastType,onBreak:breakOuts>breakIns,entries:sorted,date:today};
+}
+
+var _autoRefreshTimer=null;
+function startAutoRefresh(){if(_autoRefreshTimer)clearInterval(_autoRefreshTimer);_autoRefreshTimer=setInterval(function(){refreshAll();},30*60*1000);}
+function toggleMobileSidebar(){var sb=document.getElementById('sidebar'),ov=document.getElementById('sidebar-overlay');sb.classList.toggle('mobile-open');ov.classList.toggle('open');}
+function closeMobileSidebar(){var sb=document.getElementById('sidebar'),ov=document.getElementById('sidebar-overlay');sb.classList.remove('mobile-open');ov.classList.remove('open');}
+
+// ── Bootstrap ──────────────────────────────────────────────────
+window.addEventListener('load',function(){
+  if(_DEV_USER&&_DEV_USER.found){S.user={email:_DEV_USER.email,name:_DEV_USER.name,displayName:_DEV_USER.displayName,jiraId:_DEV_USER.jiraId};S.role=_DEV_USER.role;CONFIG.AUTH_MODE='password';fetch(mwUrl({action:'refs',role:isManager()?'manager':'se'})).then(function(r){return r.json();}).then(function(d){if(d.refs)CONFIG.REFERENCE_LINKS=d.refs;}).catch(function(){}).finally(function(){launchApp();});return;}
+  CONFIG.AUTH_MODE='password';showLoginStep('email');
+});
+
+// ── Login ──────────────────────────────────────────────────────
+function showLoginStep(step){
+  var ls=document.getElementById('login-screen');ls.style.display='flex';var isOtp=CONFIG.AUTH_MODE==='otp';
+  if(step==='email'){ls.innerHTML='<div class="login-card"><div class="sprout-logo"><div class="logo-mark">S</div><div><div class="logo-text">Sprout Solutions</div><div class="logo-sub">SE Portal</div></div></div><span class="auth-mode-badge '+(isOtp?'otp':'password')+'">'+(isOtp?'🔐 OTP login':'🔑 Password login')+'</span><h2 style="font-size:1.3rem;font-weight:700;margin-bottom:6px">Sign in</h2><p style="color:var(--muted);font-size:.875rem;margin-bottom:24px;line-height:1.5">'+(isOtp?'Enter your work email and we\'ll send a 6-digit code.':'Enter your Sprout email and password.')+'</p><div class="form-row"><label class="form-label">Work email</label><input class="form-input" id="login-email" type="email" placeholder="yourname@sprout.ph" onkeydown="if(event.key===\'Enter\')submitEmail()"/></div>'+(isOtp?'':'<div class="form-row"><label class="form-label">Password</label><input class="form-input" id="login-password" type="password" placeholder="Enter your password" onkeydown="if(event.key===\'Enter\')submitEmail()"/></div>')+'<div id="login-msg"></div><button class="btn-login" id="login-btn" onclick="submitEmail()"><span id="login-btn-text">'+(isOtp?'Send code':'Sign in')+'</span><span id="login-spinner" class="login-spinner" style="display:none"></span></button><p style="font-size:.72rem;color:var(--subtle);margin-top:16px;text-align:center">Access restricted to registered team members.</p></div>';setTimeout(function(){var el=document.getElementById('login-email');if(el)el.focus();},50);}
+  if(step==='otp'){ls.innerHTML='<div class="login-card"><div class="sprout-logo"><div class="logo-mark">S</div><div><div class="logo-text">Sprout Solutions</div><div class="logo-sub">SE Portal</div></div></div><h2 style="font-size:1.3rem;font-weight:700;margin-bottom:6px">Check your email</h2><p style="color:var(--muted);font-size:.875rem;margin-bottom:4px">We sent a 6-digit code to</p><p style="font-weight:600;font-size:.9rem;margin-bottom:20px">'+(S.pendingOtpEmail||'your email')+'</p><div class="otp-digits"><input class="otp-digit" id="otp-0" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,0)" onkeydown="otpKey(event,0)"/><input class="otp-digit" id="otp-1" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,1)" onkeydown="otpKey(event,1)"/><input class="otp-digit" id="otp-2" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,2)" onkeydown="otpKey(event,2)"/><input class="otp-digit" id="otp-3" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,3)" onkeydown="otpKey(event,3)"/><input class="otp-digit" id="otp-4" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,4)" onkeydown="otpKey(event,4)"/><input class="otp-digit" id="otp-5" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,5)" onkeydown="otpKey(event,5)"/></div><p style="font-size:.78rem;color:var(--muted);margin-top:8px">Code expires in 10 minutes.</p><div id="login-msg"></div><button class="btn-login" id="login-btn" onclick="submitOtp()"><span id="login-btn-text">Verify</span><span id="login-spinner" class="login-spinner" style="display:none"></span></button><button class="btn-text-link" onclick="showLoginStep(\'email\')">← Different email</button><button class="btn-text-link" onclick="resendOtp()" style="margin-top:4px">Resend code</button></div>';setTimeout(function(){var el=document.getElementById('otp-0');if(el)el.focus();},50);}
+}
+function otpInput(el,idx){el.value=el.value.replace(/[^0-9]/g,'');if(el.value&&idx<5){var n=document.getElementById('otp-'+(idx+1));if(n)n.focus();}if(getOtpValue().length===6)submitOtp();}
+function otpKey(e,idx){if(e.key==='Backspace'&&!e.target.value&&idx>0){var p=document.getElementById('otp-'+(idx-1));if(p){p.focus();p.value='';}}}
+function getOtpValue(){var v='';for(var i=0;i<6;i++){var el=document.getElementById('otp-'+i);v+=(el?el.value:'');}return v;}
+function setLoginLoading(loading,txt){var btn=document.getElementById('login-btn'),t=document.getElementById('login-btn-text'),sp=document.getElementById('login-spinner');if(btn)btn.disabled=loading;if(t)t.textContent=txt||(loading?'Please wait…':'Continue');if(sp)sp.style.display=loading?'inline-block':'none';}
+function showLoginMsg(msg,type){var el=document.getElementById('login-msg');if(!el)return;el.innerHTML='<div class="'+(type==='error'?'login-error':'login-success')+'">'+msg+'</div>';}
+function submitEmail(){var emailEl=document.getElementById('login-email');if(!emailEl)return;var email=emailEl.value.trim().toLowerCase();if(!email||!email.includes('@')){showLoginMsg('Please enter a valid email.','error');return;}if(CONFIG.AUTH_MODE==='otp'){setLoginLoading(true,'Sending code…');fetch(mwUrl({action:'sendotp',email:email})).then(function(r){return r.json();}).then(function(d){if(!d.sent)throw new Error(d.reason||'Failed.');S.pendingOtpEmail=email;showLoginStep('otp');}).catch(function(err){setLoginLoading(false,'Send code');showLoginMsg(err.message,'error');});}else{var passEl=document.getElementById('login-password'),pass=passEl?passEl.value.trim():'';if(!pass){showLoginMsg('Please enter your password.','error');return;}setLoginLoading(true,'Signing in…');fetch(mwUrl({action:'login',email:email,password:pass})).then(function(r){return r.json();}).then(function(d){if(!d.found)throw new Error(d.reason||'Login failed.');finishLogin(d);}).catch(function(err){setLoginLoading(false,'Sign in');showLoginMsg(err.message,'error');});}}
+function submitOtp(){var otp=getOtpValue();if(otp.length<6){showLoginMsg('Please enter all 6 digits.','error');return;}setLoginLoading(true,'Verifying…');fetch(mwUrl({action:'verifyotp',email:S.pendingOtpEmail,otp:otp})).then(function(r){return r.json();}).then(function(d){if(!d.found)throw new Error(d.reason||'Verification failed.');finishLogin(d);}).catch(function(err){setLoginLoading(false,'Verify');showLoginMsg(err.message,'error');});}
+function resendOtp(){if(!S.pendingOtpEmail)return;showLoginMsg('Sending a new code…','success');fetch(mwUrl({action:'sendotp',email:S.pendingOtpEmail})).then(function(r){return r.json();}).then(function(d){if(!d.sent)throw new Error(d.reason||'Failed.');showLoginMsg('New code sent!','success');}).catch(function(err){showLoginMsg(err.message,'error');});}
+function finishLogin(d){S.user={email:d.email,name:d.name,displayName:d.displayName,jiraId:d.jiraId};S.role=d.role;fetch(mwUrl({action:'refs',role:isManager()?'manager':'se'})).then(function(r){return r.json();}).then(function(r){if(r.refs)CONFIG.REFERENCE_LINKS=r.refs;}).catch(function(){}).finally(function(){launchApp();});}
+function logout(){S.user=null;S.role=null;S.currentPage=null;_baseline=null;_ca={scorecard:null,charts:null,filters:{year:'',month:'all',week:'all'}};if(_autoRefreshTimer){clearInterval(_autoRefreshTimer);_autoRefreshTimer=null;}document.getElementById('app').style.display='none';document.getElementById('page-container').innerHTML='';CONFIG.AUTH_MODE='password';showLoginStep('email');}
+
+function renderAuthModeToggle(){var isOtp=CONFIG.AUTH_MODE==='otp';return'<div class="auth-toggle-row"><div><div class="auth-toggle-label">Login method</div><div class="auth-toggle-sub" id="auth-toggle-sub">'+(isOtp?'OTP — 6-digit email code':'Password — from User Roles sheet')+'</div></div><div class="toggle-wrap"><div class="toggle-track'+(isOtp?' on':'')+'" id="auth-toggle-track" onclick="toggleAuthMode()"><div class="toggle-thumb"></div></div><span class="toggle-val'+(isOtp?' on':'')+'" id="auth-toggle-val">'+(isOtp?'OTP':'Password')+'</span></div></div>';}
+function toggleAuthMode(){var newMode=CONFIG.AUTH_MODE==='otp'?'password':'otp';fetch(mwUrl({action:'setauthmode',mode:newMode,role:S.role})).then(function(r){return r.json();}).then(function(d){if(!d.success)throw new Error(d.reason||'Failed.');CONFIG.AUTH_MODE=newMode;var track=document.getElementById('auth-toggle-track'),val=document.getElementById('auth-toggle-val'),sub=document.getElementById('auth-toggle-sub');if(track)track.className='toggle-track'+(newMode==='otp'?' on':'');if(val){val.textContent=newMode==='otp'?'OTP':'Password';val.className='toggle-val'+(newMode==='otp'?' on':'');}if(sub)sub.textContent=newMode==='otp'?'OTP — 6-digit email code':'Password — from User Roles sheet';}).catch(function(err){alert('Could not change auth mode: '+err.message);});}
+
+
+// ── Nav ────────────────────────────────────────────────────────
+var CA_NAV=[{id:'ca-overview',label:'SE Workload',ico:'📊',section:'Overview'}];
+var SE_NAV=[{id:'productivity',label:'Productivity',ico:'🕐',section:'Work'},{id:'my-tickets',label:'My Tickets',ico:'🎫',section:'Work'},{id:'flagged',label:'Needs Update',ico:'🔔',section:'Work',badge:true},{id:'backlog',label:'Backlog',ico:'📥',section:'Work'},{id:'stats',label:'My Stats',ico:'📊',section:'Performance'},{id:'incidents',label:'Incidents',ico:'🚨',section:'Performance'},{id:'analytics',label:'Capacity & Health',ico:'📈',section:'Performance'},{id:'evaluations',label:'Evaluations',ico:'⭐',section:'Performance'},{id:'references',label:'Reference Links',ico:'🔗',section:'Resources'}];
+var MGR_NAV=[{id:'overview',label:'Overview',ico:'🏠',section:'Dashboard'},{id:'productivity',label:'Productivity',ico:'🕐',section:'Work'},{id:'my-tickets',label:'My Tickets',ico:'🎫',section:'Work'},{id:'flagged',label:'Needs Update',ico:'🔔',section:'Work',badge:true},{id:'backlog',label:'Backlog',ico:'📥',section:'Work'},{id:'stats',label:'Team Stats',ico:'📊',section:'Performance'},{id:'incidents',label:'Incidents',ico:'🚨',section:'Performance'},{id:'analytics',label:'Capacity & Health',ico:'📈',section:'Performance'},{id:'evaluations',label:'Evaluations',ico:'⭐',section:'Performance'},{id:'reporting',label:'Reports',ico:'📋',section:'Performance'},{id:'references',label:'Reference Links',ico:'🔗',section:'Resources'}];
+
+function buildNav(){var items=isCA()?CA_NAV:isManager()?MGR_NAV:SE_NAV,lastSec='',html='';items.forEach(function(it){if(it.section!==lastSec){html+='<div class="nav-section">'+it.section+'</div>';lastSec=it.section;}html+='<div class="nav-item" id="nav-'+it.id+'" onclick="navigateTo(\''+it.id+'\');closeMobileSidebar();">'+'<span class="ico">'+it.ico+'</span>'+it.label+(it.badge?'<span class="nav-badge" id="nav-badge-flagged">0</span>':'')+'</div>';});document.getElementById('sidebar-nav').innerHTML=html;}
+
+function navigateTo(id){S.currentPage=id;document.querySelectorAll('.nav-item').forEach(function(el){el.classList.remove('active');});var ni=document.getElementById('nav-'+id);if(ni)ni.classList.add('active');var titles={overview:'Overview','ca-overview':'SE Workload','my-tickets':'My Tickets',flagged:'Needs Update',backlog:'Backlog',productivity:'Productivity',stats:isManager()?'Team Stats':'My Stats',incidents:'Incidents',analytics:'Capacity & Health',evaluations:'Evaluations',reporting:'Reports',references:'Reference Links'};document.getElementById('topbar-title').textContent=titles[id]||id;renderPage(id);}
+function updateFlaggedBadge(){var el=document.getElementById('nav-badge-flagged');if(!el)return;var count=S.flaggedTickets.length||0;el.textContent=count;el.style.display=count>0?'inline-block':'none';}
+
+function launchApp(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  var initials=(S.user.displayName||'?').split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
+  document.getElementById('user-avatar').textContent=initials;
+  document.getElementById('user-name-label').textContent=S.user.displayName;
+  document.getElementById('user-role-label').textContent=S.role;
+  document.getElementById('sidebar-role-label').textContent=isCA()?'CA Team View':isManager()?'Manager View':'SE View';
+  var badge=document.getElementById('topbar-badge');
+  badge.textContent=S.role;
+  badge.className='badge-role '+(isManager()?'badge-manager':isCA()?'badge-ca':'badge-se');
+  document.getElementById('theme-btn').textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀️':'🌙';
+  buildNav();
+  navigateTo(isCA()?'ca-overview':isManager()?'overview':'productivity');
+  refreshAll();
+  startAutoRefresh();
+}
+
+// ── refreshAll ─────────────────────────────────────────────────
+function refreshAll(){
+  var btn=document.getElementById('refresh-btn');if(btn)btn.textContent='⏳';
+  if(isCA()){
+    Promise.all([fetchCAScorecard(),fetchCACharts(),fetchSEDailyScores()])
+      .then(function(){if(btn)btn.textContent='🔄';startSnapshotRefresh();if(S.currentPage)renderPage(S.currentPage);})
+      .catch(function(e){console.error(e);if(btn)btn.textContent='🔄';});
+    return;
+  }
+  var fetches=[fetchSTTickets(),fetchIncidents(),fetchBacklog(),fetchProductivity(),fetchBaseline()];
+  if(!isManager())fetches.push(fetchSETISStats());
+  Promise.all(fetches).then(function(){return S.user?fetchStats():Promise.resolve();})
+    .then(function(){return isManager()?fetchAnalytics():Promise.resolve();})
+    .then(function(){computeTIS();updateFlaggedBadge();if(btn)btn.textContent='🔄';if(S.currentPage)renderPage(S.currentPage);if(isManager()){return fetchManagerOverview(false).then(function(){if(S.currentPage==='overview')renderPage('overview');});}})
+    .catch(function(e){console.error(e);if(btn)btn.textContent='🔄';});
+}
+
+function fetchSETISStats(){if(!S.user||isManager())return Promise.resolve();return fetch(mwUrl({action:'gettisstats',email:S.user.email})).then(function(r){return r.json();}).then(function(d){if(!d.error)_seTISStats=d;}).catch(function(){});}
+function fetchProductivity(){if(!S.user)return Promise.resolve();return Promise.all([fetch(mwUrl({action:'getworklog',email:S.user.email,role:S.role})).then(function(r){return r.json();}).then(function(d){_prod.workLog=d;}).catch(function(){}),fetch(mwUrl({action:'getrto',email:S.user.email,role:S.role})).then(function(r){return r.json();}).then(function(d){_prod.rto=d;}).catch(function(){})]);}
+function fetchManagerOverview(manualBust){var url=manualBust?mwUrl({action:'manageroverview',bust:Date.now()}):mwUrl({action:'manageroverview'});return fetch(url).then(function(r){return r.json();}).then(function(d){if(d.error)throw new Error(d.error);S.mgrOverview=d;S.mgrOverviewLoadedAt=Date.now();if(d.baseline)_baseline=d.baseline;}).catch(function(e){console.warn('Manager overview:',e.message);S.mgrOverview=null;});}
+function manualRefreshOverview(){var btn=document.querySelector('[onclick="manualRefreshOverview()"]');if(btn){btn.textContent='⏳';btn.disabled=true;}fetchManagerOverview(true).then(function(){renderPage('overview');if(btn){btn.textContent='🔄 Refresh';btn.disabled=false;}});}
+function fetchSTTickets(){if(!S.user)return Promise.resolve();return fetch(mwUrl({action:'tickets',jiraId:S.user.jiraId||'',email:S.user.email})).then(function(r){return r.json();}).then(function(d){if(d.error)throw new Error(d.error);S.stTickets=d.tickets||[];S.flaggedTickets=d.flagged||[];}).catch(function(e){console.warn('Tickets:',e.message);S.stTickets=demoSTTickets();S.flaggedTickets=demoFlagged();});}
+function fetchIncidents(){if(!S.user)return Promise.resolve();return fetch(mwUrl({action:'incidents',name:S.user.name||'',role:S.role})).then(function(r){return r.json();}).then(function(d){if(d.error)throw new Error(d.error);S.incidents=d.incidents||[];S.incidentYears=d.years||[];S.incidentMonthWeeks=d.monthWeeks||[];}).catch(function(e){console.warn('Incidents:',e.message);S.incidents=demoIncidents();});}
+function fetchStats(period,member){if(!S.user)return Promise.resolve();var params={action:'stats',email:S.user.email};if(period&&period!=='all')params.period=period;if(member&&member!=='all')params.member=member;return fetch(mwUrl(params)).then(function(r){return r.json();}).then(function(d){if(d.error)throw new Error(d.error);S.stats=d;if(d.monthYears){var c=(d.quarterYears||[]).concat(d.monthYears||[]);S.availablePeriods=c.filter(function(v,i,a){return a.indexOf(v)===i;});}if(d.members)S.availableMembers=d.members;}).catch(function(e){console.warn('Stats:',e.message);S.stats=demoStats();});}
+function fetchBacklog(){return fetch(mwUrl({action:'backlog'})).then(function(r){return r.json();}).then(function(d){if(d.error)throw new Error(d.error);S.backlog={backend:d.backend||[],investigation:d.investigation||[]};}).catch(function(e){console.warn('Backlog:',e.message);S.backlog={backend:[],investigation:[]};});}
+function fetchAnalytics(){return fetch(mwUrl({action:'teamtickets'})).then(function(r){return r.json();}).then(function(d){if(d.error)throw new Error(d.error);S.analytics=buildAnalyticsFromTickets(d.tickets||[]);}).catch(function(e){console.warn('Analytics:',e.message);S.analytics=demoAnalytics();});}
+function applyStatsFilter(){var period=(document.getElementById('sf-period')||{}).value||'all',member=(document.getElementById('sf-member')||{}).value||'all';S.statsFilters={period:period,member:member};var sc=document.getElementById('stats-scorecard');if(sc)sc.innerHTML='<div style="padding:20px;color:var(--muted);display:flex;align-items:center;gap:8px"><div class="mini-spinner"></div> Loading…</div>';fetchStats(period,member).then(function(){renderPage('stats');});}
+
+// ── CA Team fetches ────────────────────────────────────────────
+function fetchSEDailyScores(){
+  return fetch(mwUrl({action:'sedailyscores'}))
+    .then(function(r){return r.json();})
+    .then(function(d){if(d.ok)_seDailyScores=d;})
+    .catch(function(e){console.warn('SE daily scores:',e.message);});
+}
+
+function startSnapshotRefresh(){
+  if(_snapshotRefreshTimer)clearInterval(_snapshotRefreshTimer);
+  _snapshotRefreshTimer=setInterval(function(){
+    fetchSEDailyScores().then(function(){
+      var el=document.getElementById('se-snapshot-inner');
+      if(el)el.innerHTML=buildSnapshotTiles();
+      var ts=document.getElementById('snapshot-ts');
+      if(ts)ts.textContent='Updated '+new Date().toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'});
+    });
+  },10*60*1000);
+}
+
+function refreshSnapshotNow(){
+  var btn=document.getElementById('snapshot-refresh-btn');
+  if(btn)btn.textContent='⏳';
+  fetchSEDailyScores().then(function(){
+    var el=document.getElementById('se-snapshot-inner');
+    if(el)el.innerHTML=buildSnapshotTiles();
+    var ts=document.getElementById('snapshot-ts');
+    if(ts)ts.textContent='Updated '+new Date().toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'});
+    if(btn)btn.textContent='🔄';
+  });
+}
+
+function fetchCAScorecard(){return fetch(mwUrl({action:'cascorecard'})).then(function(r){return r.json();}).then(function(d){if(d.ok)_ca.scorecard=d;}).catch(function(e){console.warn('CA scorecard:',e.message);});}
+function fetchCACharts(){var p={action:'cacharts'};if(_ca.filters.year)p.year=_ca.filters.year;if(_ca.filters.month!=='all')p.month=_ca.filters.month;if(_ca.filters.week!=='all')p.week=_ca.filters.week;return fetch(mwUrl(p)).then(function(r){return r.json();}).then(function(d){if(d.ok){_ca.charts=d;if(d.baseline)_baseline=d.baseline;if(d.onHoldPending)_ca.onHoldPending=d.onHoldPending;}}).catch(function(e){console.warn('CA charts:',e.message);});}
+// ── Client-side week computation (Sat→Fri, capped at current week) ──
+function computeClientWeeks(year, month){
+  // month is 1-based
+  var periodStart=new Date(year,month-1,1);
+  var periodEnd=new Date(year,month,0,23,59,59,999);
+  var now=new Date();
+  var weeks=[],MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var cursor=new Date(periodStart);
+  // Snap back to nearest Saturday (day 6)
+  var dow=cursor.getDay(); // 0=Sun
+  var diffToSat=(dow===6)?0:-(dow+1);
+  cursor.setDate(cursor.getDate()+diffToSat);
+  for(var wn=1;wn<=6;wn++){
+    var wkSat=new Date(cursor),wkFri=new Date(cursor);
+    wkFri.setDate(wkFri.getDate()+6);wkFri.setHours(23,59,59,999);
+    // Count weekdays in this month
+    var daysThisMonth=0,daysOther=0;
+    for(var d=new Date(wkSat);d<=wkFri;d.setDate(d.getDate()+1)){
+      var dw=d.getDay();if(dw===0||dw===6)continue;
+      if(d.getMonth()===periodStart.getMonth()&&d.getFullYear()===periodStart.getFullYear())daysThisMonth++;
+      else daysOther++;
+    }
+    if(daysThisMonth>=daysOther&&daysThisMonth>0){
+      // Cap at current week — if wkSat is in the future, skip
+      if(wkSat>now){cursor.setDate(cursor.getDate()+7);continue;}
+      var sM=MONTHS_SHORT[wkSat.getMonth()],sD=wkSat.getDate(),eM=MONTHS_SHORT[wkFri.getMonth()],eD=wkFri.getDate();
+      var range=sM===eM?sM+' '+sD+'–'+eD:sM+' '+sD+' – '+eM+' '+eD;
+      weeks.push({label:'Wk '+wn,range:range,start:wkSat.getTime(),end:wkFri.getTime()});
+    }
+    cursor.setDate(cursor.getDate()+7);
+    if(cursor>periodEnd)break;
+  }
+  return weeks;
+}
+
+function updateCAMonthOpts(){
+  var ySel=document.getElementById('ca-filter-year');
+  var mSel=document.getElementById('ca-filter-month');
+  if(!ySel||!mSel)return;
+  var selYear=parseInt(ySel.value,10);
+  var curYear=parseInt(getCurrentYear(),10);
+  var curMonth=parseInt(getCurrentMonthPrefix().slice(5),10); // yyyy-mm → mm
+  var MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var maxMonth=selYear===curYear?curMonth:12;
+  var curMVal=mSel.value;
+  var opts='<option value="all">All months</option>';
+  for(var i=1;i<=maxMonth;i++){
+    var sel=(curMVal===i.toString())?' selected':'';
+    opts+='<option value="'+i+'"'+sel+'>'+MN[i-1]+'</option>';
+  }
+  mSel.innerHTML=opts;
+  // If previously selected month is now out of range, reset
+  if(curMVal!=='all'&&parseInt(curMVal,10)>maxMonth){mSel.value='all';}
+  updateCAWeekOpts();
+}
+
+function updateCAWeekOpts(){
+  var ySel=document.getElementById('ca-filter-year');
+  var mSel=document.getElementById('ca-filter-month');
+  var wSel=document.getElementById('ca-filter-week');
+  if(!wSel)return;
+  var selYear=ySel?parseInt(ySel.value,10):parseInt(getCurrentYear(),10);
+  var selMonth=mSel?mSel.value:'all';
+  var curWVal=wSel.value;
+  if(selMonth==='all'){
+    wSel.innerHTML='<option value="all">All weeks</option>';
+    wSel.disabled=true;
+    wSel.style.opacity='0.4';
+    wSel.style.cursor='not-allowed';
+    return;
+  }
+  wSel.disabled=false;
+  wSel.style.opacity='1';
+  wSel.style.cursor='pointer';
+  var weeks=computeClientWeeks(selYear,parseInt(selMonth,10));
+  var opts='<option value="all">All weeks</option>';
+  weeks.forEach(function(w){
+    var sel=(curWVal===w.label)?' selected':'';
+    opts+='<option value="'+w.label+'"'+sel+'>'+w.label+' · '+w.range+'</option>';
+  });
+  wSel.innerHTML=opts;
+  // If previously selected week no longer exists, reset
+  if(curWVal!=='all'&&!weeks.find(function(w){return w.label===curWVal;})){wSel.value='all';}
+}
+
+function applyCAFilter(){
+  // Read current values from selects
+  var ySel=document.getElementById('ca-filter-year');
+  var mSel=document.getElementById('ca-filter-month');
+  var wSel=document.getElementById('ca-filter-week');
+  if(ySel)_ca.filters.year=ySel.value;
+  if(mSel)_ca.filters.month=mSel.value;
+  if(wSel)_ca.filters.week=wSel.disabled?'all':wSel.value;
+  // Show loading
+  var chartsEl=document.getElementById('ca-charts-area');
+  if(chartsEl)chartsEl.innerHTML='<div class="ca-loading"><div class="mini-spinner"></div> Refreshing charts…</div>';
+  // Disable apply btn while loading
+  var applyBtn=document.getElementById('ca-apply-btn');
+  if(applyBtn){applyBtn.disabled=true;applyBtn.textContent='Loading…';}
+  fetchCACharts().then(function(){
+    renderCACharts();
+    var insEl=document.getElementById('ca-insights-row');
+    if(insEl&&_ca.scorecard&&_ca.scorecard.counts)insEl.innerHTML=buildCAInsights(_ca.scorecard.counts);
+    if(applyBtn){applyBtn.disabled=false;applyBtn.textContent='Apply';}
+  });
+}
+
+
+// ── renderPage dispatch ────────────────────────────────────────
+function renderPage(id){
+  var pc=document.getElementById('page-container');
+  if(!pc)return;
+  var map={
+    'ca-overview':renderCAOverview,
+    'overview':renderOverview,
+    'productivity':renderProductivity,
+    'my-tickets':renderMyTickets,
+    'flagged':renderFlagged,
+    'backlog':renderBacklog,
+    'stats':renderStats,
+    'incidents':renderIncidents,
+    'analytics':renderAnalytics,
+    'evaluations':renderEvaluations,
+    'reporting':renderReporting,
+    'references':renderReferences
+  };
+  var fn=map[id];
+  if(fn){pc.innerHTML=fn();}else{pc.innerHTML='<div class="empty-state" style="padding:60px">Page not found: '+id+'</div>';}
+}
+
+// ════════════════════════════════════════════════════════════
+//  CA TEAM RENDERS (with dynamic threshold)
+// ════════════════════════════════════════════════════════════
+
+function renderCAOverview(){
+  var sc=_ca.scorecard,ch=_ca.charts;
+
+  // ── Live scorecards (always current, no filter) ──
+  var scHtml='';
+  if(!sc){
+    scHtml='<div class="ca-loading"><div class="mini-spinner"></div> Loading scorecards…</div>';
+  } else {
+    var c=sc.counts||{};
+    scHtml='<div class="ca-scorecard-grid">'+
+      caScCard('Total this month',c.total||0,'created in '+(sc.monthLabel||''),'#378ADD','var(--blueberry-600)')+
+      caScCard('Backlog',c.backlog||0,'To Do — awaiting pickup','#888780','var(--mushroom-500)')+
+      caScCard('SE Actions',c.ongoing||0,'In Progress + For Peer Review','#1D9E75','var(--wintermelon-600)')+
+      caScCard('Awaiting Feedback',c.awaitingFeedback||0,'On Hold','#EF9F27','var(--mango-600)')+
+      caScCard('Escalated',c.escalated||0,'For Product Team','#7c3aed','var(--lavender-600)')+
+      caScCard('Done',c.done||0,'For Checking + Done','#639922','var(--kangkong-600)')+
+      caScCard('Invalid',c.invalid||0,'Archived + Rejected','#E24B4A','var(--tomato-600)')+
+    '</div>';
+  }
+
+  // ── Insights ──
+  var insightsHtml='';
+  if(sc&&sc.counts){
+    insightsHtml='<div class="ca-insight-row" id="ca-insights-row">'+buildCAInsights(sc.counts)+'</div>';
+  }
+
+  // ── SE Workload snapshot tiles (live, always current, no filter) ──
+  var snapshotHtml=renderSEWorkloadSnapshot(ch);
+  var pendingHtml='';
+
+  // ── Filter bar (affects charts only) ──
+  var years=(ch&&ch.availYears)?ch.availYears:[];
+  var curYear=getCurrentYear();
+  if(years.indexOf(curYear)===-1)years.unshift(curYear);
+  var yearOpts=years.map(function(y){return'<option value="'+y+'"'+(_ca.filters.year===y?' selected':'')+'>'+y+'</option>';}).join('');
+  // Month opts: cap at current month if selected year is current year
+  var curMonthNum=parseInt(getCurrentMonthPrefix().slice(5),10);
+  var selYearNum=parseInt(_ca.filters.year||curYear,10);
+  var maxMonth=selYearNum===parseInt(curYear,10)?curMonthNum:12;
+  var MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var monthOpts='<option value="all"'+(_ca.filters.month==='all'?' selected':'')+'>All months</option>';
+  for(var mi=1;mi<=maxMonth;mi++){monthOpts+='<option value="'+mi+'"'+(_ca.filters.month===mi.toString()?' selected':'')+'>'+MN[mi-1]+'</option>';}
+  // Week opts: computed client-side from selected month
+  var weekOpts='<option value="all"'+(_ca.filters.week==='all'?' selected':'')+'>All weeks</option>';
+  var weekDisabled=_ca.filters.month==='all';
+  if(!weekDisabled){
+    var clientWeeks=computeClientWeeks(selYearNum,parseInt(_ca.filters.month,10));
+    clientWeeks.forEach(function(w){weekOpts+='<option value="'+w.label+'"'+(_ca.filters.week===w.label?' selected':'')+'>'+w.label+' · '+w.range+'</option>';});
+  }
+  var filterHtml='<div class="ca-filter-bar" style="margin-top:10px">'+
+    '<label>Year</label>'+
+    '<select class="ca-filter-sel" id="ca-filter-year" onchange="updateCAMonthOpts()">'+yearOpts+'</select>'+
+    '<div style="width:1px;height:18px;background:var(--border)"></div>'+
+    '<label>Month</label>'+
+    '<select class="ca-filter-sel" id="ca-filter-month" onchange="updateCAWeekOpts()">'+monthOpts+'</select>'+
+    '<label>Week</label>'+
+    '<select class="ca-filter-sel" id="ca-filter-week"'+(weekDisabled?' disabled style="opacity:.4;cursor:not-allowed"':'')+'>'+weekOpts+'</select>'+
+    '<button class="btn-primary" id="ca-apply-btn" onclick="applyCAFilter()" style="padding:6px 16px;font-size:.8rem">Apply</button>'+
+    '<span style="font-size:.72rem;color:var(--muted);margin-left:auto">Filters apply to charts only · snapshot tiles always current</span>'+
+  '</div>';
+
+  return scHtml+insightsHtml+snapshotHtml+pendingHtml+filterHtml+
+    '<div id="ca-charts-area">'+renderCAChartsInner(ch)+'</div>';
+}
+
+// ── SE Workload snapshot tiles ────────────────────────────────
+function buildSnapshotTiles(){
+  var t=getThreshold();
+  var scoreMap={};
+  if(_seDailyScores&&_seDailyScores.scores){
+    _seDailyScores.scores.forEach(function(s){scoreMap[s.name]={score:s.score,count:s.count};});
+  }
+  var seList=(_ca.charts&&_ca.charts.seWorkload)?_ca.charts.seWorkload:[];
+  var names={};
+  seList.forEach(function(se){names[se.name]=true;});
+  Object.keys(scoreMap).forEach(function(n){names[n]=true;});
+  var allNames=Object.keys(names);
+  if(!allNames.length)return'<div class="ca-loading"><div class="mini-spinner"></div> Loading…</div>';
+  allNames.sort(function(a,b){
+    var sa=scoreMap[a]?scoreMap[a].score:0,sb=scoreMap[b]?scoreMap[b].score:0;
+    return sb-sa;
+  });
+  return allNames.map(function(name){
+    var ds=scoreMap[name]||{score:0,count:0};
+    var score=ds.score,count=ds.count;
+    var status=scoreStatus(score),col=scoreColor(score);
+    var topCol=status==='overloaded'?'var(--tomato-500)':status==='high'?'var(--mango-500)':'var(--kangkong-500)';
+    var badgeTxt=status==='overloaded'?'Overloaded':status==='high'?'High':'Healthy';
+    var badgeCls=status==='overloaded'?'chip-red':status==='high'?'chip-yellow':'chip-green';
+    var pct=t.threshold>0?Math.min(Math.round(score/t.threshold*100),100):0;
+    return'<div class="se-snap-tile">'+
+      '<div class="se-snap-top" style="background:'+topCol+'"></div>'+
+      '<div class="se-snap-name">'+name.split(' ')[0]+'</div>'+
+      '<div class="se-snap-score" style="color:'+col+'">'+score+'</div>'+
+      '<div class="se-snap-sub">'+count+' ticket'+(count!==1?'s':'')+' today</div>'+
+      '<div class="se-snap-bar-track"><div class="se-snap-bar-fill" style="width:'+pct+'%;background:'+col+'"></div></div>'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px">'+
+        '<span class="chip '+badgeCls+'" style="font-size:.62rem">'+badgeTxt+'</span>'+
+        '<span style="font-size:.67rem;color:var(--muted)">'+pct+'%</span>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function renderCombinedLivePanel(ch){
+  var t=getThreshold();
+  var today=_seDailyScores?_seDailyScores.today:'today';
+  var ts=new Date().toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'});
+  var baseNote=t.fallback
+    ?'<span style="font-size:.69rem;color:var(--muted)">⚠ Default threshold ('+t.threshold+')</span>'
+    :'<span style="font-size:.69rem;color:var(--muted)">📊 mean '+t.mean+' · σ '+t.stddev+' · flag at '+t.threshold+'</span>';
+
+  // ── Left: Daily capacity score ──
+  var tilesHtml=buildSnapshotTiles();
+  var leftCol=
+    '<div class="live-col-left">'+
+      '<div class="live-col-header">'+
+        '<div>'+
+          '<div class="live-col-title">Daily capacity score</div>'+
+          '<div class="live-col-meta">'+today+' · <span id="snapshot-ts">Updated '+ts+'</span> · auto-refreshes every 10 min</div>'+
+        '</div>'+
+        '<div style="display:flex;align-items:center;gap:8px;flex-shrink:0">'+
+          baseNote+
+          '<button class="btn-icon" id="snapshot-refresh-btn" onclick="refreshSnapshotNow()" title="Refresh" style="padding:3px 8px;font-size:.78rem">🔄</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="se-snap-grid" id="se-snapshot-inner">'+tilesHtml+'</div>'+
+      '<div class="live-col-note">Score = weighted sum by ticket type · bar = % of threshold ('+t.threshold+')</div>'+
+    '</div>';
+
+  // ── Right: On Hold pending with ──
+  var pending=_ca.onHoldPending||{};
+  var entries=Object.keys(pending).sort(function(a,b){return pending[b]-pending[a];});
+  var total=entries.reduce(function(s,k){return s+pending[k];},0);
+  var BUCKET_COLORS={'CA':'#7c3aed','L3':'#2563eb','Devs':'#dc2626','DBA':'#ca8a04','L2':'#f97316','Product':'#0d9488'};
+  function bCol(n){return BUCKET_COLORS[n]||'var(--mushroom-500)';}
+  var pendingRows=entries.length
+    ? entries.map(function(k){
+        var count=pending[k],col=bCol(k),pct=total>0?Math.round(count/total*100):0;
+        var barPct=total>0?Math.round(count/total*100):0;
+        return'<div class="pending-row">'+
+          '<div class="pending-label">'+k+'</div>'+
+          '<div class="pending-track"><div class="pending-fill" style="width:'+barPct+'%;background:'+col+'"></div></div>'+
+          '<div class="pending-count" style="color:'+col+'">'+count+'</div>'+
+          '<div class="pending-pct">'+pct+'%</div>'+
+        '</div>';
+      }).join('')
+    : '<div style="color:var(--muted);font-size:.8rem;padding:8px 0">No On Hold tickets.</div>';
+
+  var rightCol=
+    '<div class="live-col-right">'+
+      '<div class="live-col-header">'+
+        '<div>'+
+          '<div class="live-col-title">On hold · pending with</div>'+
+          '<div class="live-col-meta">'+total+' tickets total · live from Jira</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="pending-rows">'+pendingRows+'</div>'+
+    '</div>';
+
+  return'<div class="section-card live-panel" style="margin-bottom:18px">'+
+    '<div class="live-two-col">'+leftCol+rightCol+'</div>'+
+  '</div>';
+}
+
+// Keep renderSEWorkloadSnapshot as alias (called from renderCAOverview)
+function renderSEWorkloadSnapshot(ch){ return renderCombinedLivePanel(ch); }
+// Keep renderOnHoldPending as no-op (now merged into renderCombinedLivePanel)
+function renderOnHoldPending(pending){ return ''; }
+
+
+function caScCard(label,val,sub,barColor,textColor){
+  return'<div class="ca-sc" style="--ca-bar:'+barColor+';--ca-color:'+textColor+'">'+
+    '<div class="ca-sc-label">'+label+'</div>'+
+    '<div class="ca-sc-val">'+val+'</div>'+
+    '<div class="ca-sc-sub">'+sub+'</div>'+
+  '</div>';
+}
+
+function buildCAInsights(c){
+  var ins=[];
+  if((c.backlog||0)>15)ins.push(caInsight('warn','⚠','<strong>'+(c.backlog||0)+' tickets</strong> in backlog with no SE assigned yet'));
+  else if((c.backlog||0)>0)ins.push(caInsight('ok','📥','<strong>'+(c.backlog||0)+' tickets</strong> queued and awaiting pickup'));
+  if(_ca.charts&&_ca.charts.byPriority){var p1=(_ca.charts.byPriority[0]||{}).count||0,p2=(_ca.charts.byPriority[1]||{}).count||0;if(p1+p2>0)ins.push(caInsight(p1>3?'danger':'warn','🔴','<strong>'+(p1+p2)+' urgent tickets</strong> open (P1: '+p1+', P2: '+p2+')'));}
+  if((c.awaitingFeedback||0)>0)ins.push(caInsight('info','⏳','<strong>'+(c.awaitingFeedback||0)+' tickets</strong> On Hold — waiting on external feedback'));
+  if(_ca.charts&&_ca.charts.seWorkload&&_ca.charts.seWorkload.length){
+    var t=getThreshold();
+    var overloaded=_ca.charts.seWorkload.filter(function(se){return(se.weightedScore||0)>=t.threshold;}).length;
+    var seCount=_ca.charts.seWorkload.length;
+    var openTotal=_ca.charts.seWorkload.reduce(function(s,se){return s+(se.total||0);},0);
+    var avg=seCount>0?Math.round(openTotal/seCount):0;
+    ins.push(overloaded>0
+      ?caInsight('danger','🔥','<strong>'+overloaded+' SE'+(overloaded>1?'s are':' is')+'</strong> above auto-threshold ('+t.threshold+') — team may be understaffed')
+      :caInsight('ok','👥','<strong>'+seCount+' SEs</strong> handling <strong>'+openTotal+' open tickets</strong> — avg '+avg+' each'));
+  }
+  return ins.join('');
+}
+
+function caInsight(cls,ico,text){return'<div class="ca-insight '+cls+'"><span class="ca-insight-ico">'+ico+'</span><span class="ca-insight-text">'+text+'</span></div>';}
+
+function renderCACharts(){var el=document.getElementById('ca-charts-area');if(el)el.innerHTML=renderCAChartsInner(_ca.charts);}
+
+function renderCAChartsInner(ch){
+  if(!ch)return'<div class="ca-loading"><div class="mini-spinner"></div> Loading charts…</div>';
+  if(!ch.ok)return'<div class="empty-state" style="padding:40px">Could not load chart data.'+(ch.error?' ('+ch.error+')':'')+'</div>';
+  return'<div class="ca-charts-grid">'+
+    renderCAIssueTypeChart(ch.byIssueType||[])+
+    renderCAPriorityChart(ch.byPriority||[])+
+    renderCAVolumeChart(ch.weeklyTrend||[])+
+    renderCASEWorkloadChart(ch.seWorkload||[])+
+  '</div>';
+}
+
+function renderCAIssueTypeChart(data){
+  if(!data.length)return'<div class="ca-chart-card"><div class="ca-chart-title">Issue type breakdown</div><div class="empty-state" style="padding:30px">No data.</div></div>';
+  var max=Math.max.apply(null,data.map(function(d){return d.count;}))||1;
+  var COLORS=['#378ADD','#1D9E75','#7c3aed','#EF9F27','#E24B4A','#0d9488','#888780','#d946ef'];
+  var rows=data.slice(0,10).map(function(d,i){
+    var col=COLORS[i%COLORS.length];
+    return'<div class="ca-bar-row"><div class="ca-bar-label" title="'+d.label+'">'+d.label+'</div>'+
+      '<div class="ca-bar-track"><div class="ca-bar-fill" style="width:'+(d.count/max*100).toFixed(1)+'%;background:'+col+'"></div></div>'+
+      '<div class="ca-bar-val">'+d.count+'</div></div>';
+  }).join('');
+  return'<div class="ca-chart-card"><div class="ca-chart-title">Issue type breakdown</div><div class="ca-chart-sub">ticket count by type · filtered period</div>'+rows+'</div>';
+}
+
+function renderCAPriorityChart(data){
+  var COLORS={tomato:'#E24B4A',carrot:'#EF9F27',teal:'#1D9E75',gray:'#888780'};
+  var max=Math.max.apply(null,data.map(function(d){return d.count;}))||1;
+  var p1=(data[0]||{}).count||0,p2=(data[1]||{}).count||0,urgTotal=p1+p2;
+  var rows=data.map(function(d){var col=COLORS[d.color]||'#888780';return'<div class="ca-bar-row"><div class="ca-bar-label">'+d.label+'</div><div class="ca-bar-track"><div class="ca-bar-fill" style="width:'+(d.count/max*100).toFixed(1)+'%;background:'+col+'"></div></div><div class="ca-bar-val">'+d.count+'</div></div>';}).join('');
+  var footer=urgTotal>0?'<div class="ca-stat-footer"><span class="big" style="color:#E24B4A">'+urgTotal+'</span><span class="small">urgent (P1+P2) need attention</span></div>':'<div class="ca-stat-footer"><span class="big" style="color:var(--kangkong-600)">0</span><span class="small">urgent tickets — all clear</span></div>';
+  return'<div class="ca-chart-card"><div class="ca-chart-title">Priority distribution · open tickets</div><div class="ca-chart-sub">urgency of current open backlog</div>'+rows+footer+'</div>';
+}
+
+// ── Volume trend — stacked bar ────────────────────────────────
+function renderCAVolumeChart(data){
+  if(!data.length)return'<div class="ca-chart-card full"><div class="ca-chart-title">Volume trend</div><div class="empty-state" style="padding:30px">No data for selected period.</div></div>';
+
+  var W=660,PT=28,PR=24,PB=56,PL=48,cW=W-PL-PR,cH=110;
+  var maxVal=Math.max.apply(null,data.map(function(d){return(d.created||0)+(d.resolved||0);}));
+  maxVal=maxVal||1;
+  var n=data.length;
+  // Evenly distribute bars across the full chart width
+  var slotW=cW/n;
+  var barW=Math.max(6,Math.min(52,Math.floor(slotW*0.65)));
+  var maxLabels=Math.min(10,n);
+  var step=n<=maxLabels?1:Math.ceil(n/maxLabels);
+  var rotate=n>8;
+
+  // Grid lines at 0, 50%, 100% of max
+  var gridVals=[0,Math.round(maxVal*0.5),maxVal];
+  var grid=gridVals.map(function(v){
+    var y=PT+cH-(v/maxVal)*cH*0.88;
+    return'<line x1="'+PL+'" x2="'+(W-PR)+'" y1="'+y.toFixed(1)+'" y2="'+y.toFixed(1)+
+      '" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3"/>'+
+      '<text x="'+(PL-6)+'" y="'+(y+4).toFixed(1)+'" text-anchor="end" font-size="10" fill="var(--subtle)">'+v+'</text>';
+  }).join('');
+
+  // Stacked bars + value labels — bars evenly spaced using slot centres
+  var bars=data.map(function(d,i){
+    var xCenter=PL+slotW*i+slotW/2;
+    var xLeft=(xCenter-barW/2).toFixed(1);
+    var created=d.created||0,resolved=d.resolved||0,total=created+resolved;
+    var hCreated=total>0?(created/maxVal)*cH*0.88:0;
+    var hResolved=total>0?(resolved/maxVal)*cH*0.88:0;
+    var yCreated=(PT+cH-hCreated-hResolved).toFixed(1);
+    var yResolved=(PT+cH-hResolved).toFixed(1);
+    var showLabel=i%step===0||i===n-1;
+    // Created bar (top)
+    var createdBar=hCreated>0?'<rect x="'+xLeft+'" y="'+yCreated+'" width="'+barW+'" height="'+hCreated.toFixed(1)+'" fill="#378ADD" rx="2"/>':'';
+    // Resolved bar (bottom)
+    var resolvedBar=hResolved>0?'<rect x="'+xLeft+'" y="'+yResolved+'" width="'+barW+'" height="'+hResolved.toFixed(1)+'" fill="#639922" rx="2"/>':'';
+    // Total value label above bar
+    var valLabel=total>0&&showLabel?'<text x="'+xCenter.toFixed(1)+'" y="'+(parseFloat(yCreated)-4).toFixed(1)+'" text-anchor="middle" font-size="9" font-weight="600" fill="var(--muted)">'+total+'</text>':'';
+    // X-axis label
+    var lbl=d.label;if(lbl.length>8)lbl=lbl.slice(0,8);
+    var xAxisLabel='';
+    if(showLabel){
+      var ly=PT+cH+16;
+      if(rotate){
+        xAxisLabel='<text x="'+xCenter.toFixed(1)+'" y="'+ly+'" text-anchor="end" font-size="9" fill="var(--muted)" transform="rotate(-35,'+xCenter.toFixed(1)+','+ly+')">'+lbl+'</text>';
+      } else {
+        xAxisLabel='<text x="'+xCenter.toFixed(1)+'" y="'+ly+'" text-anchor="middle" font-size="10" fill="var(--muted)">'+lbl+'</text>'+
+          (d.range&&d.range!==d.label?'<text x="'+xCenter.toFixed(1)+'" y="'+(ly+14)+'" text-anchor="middle" font-size="8" fill="var(--subtle)">'+d.range+'</text>':'');
+      }
+    }
+    // Invisible hover rect over full bar height for tooltip
+    var hTotal=hCreated+hResolved;
+    var yTop=(PT+cH-hTotal).toFixed(1);
+    var hoverRect=hTotal>0?'<rect x="'+xLeft+'" y="'+yTop+'" width="'+barW+'" height="'+hTotal.toFixed(1)+'" fill="transparent">'+
+      '<title>'+d.label+(d.range&&d.range!==d.label?' ('+d.range+')':'')+
+      '&#10;Created: '+created+
+      '&#10;Resolved: '+resolved+
+      '&#10;Net: '+(created-resolved>=0?'+':'')+(created-resolved)+'</title></rect>':'';
+    return createdBar+resolvedBar+valLabel+xAxisLabel+hoverRect;
+  }).join('');
+
+  var H=PT+cH+PB;
+  var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'" style="width:100%;display:block;overflow:visible">'+
+    grid+bars+'</svg>';
+
+  var totalCreated=data.reduce(function(s,d){return s+(d.created||0);},0);
+  var totalResolved=data.reduce(function(s,d){return s+(d.resolved||0);},0);
+  var gap=totalCreated-totalResolved;
+  var gapNote=gap>0
+    ?'<span style="font-size:.72rem;color:var(--tomato-600);font-weight:600">▲ '+gap+' more created than resolved</span>'
+    :'<span style="font-size:.72rem;color:var(--kangkong-600);font-weight:600">✓ Resolved ≥ Created</span>';
+
+  return'<div class="ca-chart-card full">'+
+    '<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px">'+
+      '<div><div class="ca-chart-title">Volume trend</div>'+
+      '<div class="ca-chart-sub">tickets created vs resolved · stacked · filtered period</div></div>'+
+      gapNote+'</div>'+
+    svg+
+    '<div class="ca-legend">'+
+      '<div class="ca-leg"><div class="ca-leg-dot" style="background:#378ADD"></div>Created</div>'+
+      '<div class="ca-leg"><div class="ca-leg-dot" style="background:#639922"></div>Resolved (For Checking / Done)</div>'+
+      '<div style="margin-left:auto;font-size:.7rem;color:var(--subtle)">Total: '+totalCreated+' created · '+totalResolved+' resolved</div>'+
+    '</div></div>';
+}
+
+// ── SE Workload CHART (filterable, Stats-sheet-based) ─────────
+function renderCASEWorkloadChart(data){
+  if(!data||!data.length)return'<div class="ca-chart-card"><div class="ca-chart-title">SE workload · period</div><div class="empty-state" style="padding:30px">No resolved tickets in selected period.</div></div>';
+  var t=getThreshold(),thresh=t.threshold,warnT=t.warnThreshold;
+  var maxScore=Math.max.apply(null,data.map(function(d){return d.weightedScore||0;}).concat([thresh]));
+  var threshPct=Math.min(thresh/maxScore*100,100).toFixed(1);
+  var warnPct=Math.min(warnT/maxScore*100,100).toFixed(1);
+  var overCount=data.filter(function(d){return(d.weightedScore||0)>=thresh;}).length;
+
+  var rows=data.map(function(d){
+    var score=d.weightedScore||0,pct=Math.min(score/maxScore*100,100).toFixed(1),col=scoreColor(score),status=scoreStatus(score);
+    var badgeTxt=status==='overloaded'?'Overloaded':status==='high'?'High load':'Healthy';
+    var badgeCls=status==='overloaded'?'chip-red':status==='high'?'chip-yellow':'chip-green';
+    return'<div class="se-wl-row" title="Score: '+score+' | '+d.total+' tickets">'+
+      '<div class="se-wl-name" title="'+d.name+'">'+d.name.split(' ')[0]+'</div>'+
+      '<div class="se-wl-track">'+
+        '<div class="se-wl-fill" style="width:'+pct+'%;background:'+col+'"></div>'+
+        '<div class="se-wl-threshold" style="left:'+warnPct+'%;background:var(--mango-500);opacity:.5"></div>'+
+        '<div class="se-wl-threshold" style="left:'+threshPct+'%"></div>'+
+      '</div>'+
+      '<div class="se-wl-count" style="color:'+col+'">'+score+'</div>'+
+      '<span class="chip '+badgeCls+'" style="font-size:.62rem;margin-left:4px;flex-shrink:0">'+badgeTxt+'</span>'+
+    '</div>';
+  }).join('');
+
+  var subtext='Weighted score from Stats sheet · '+data.reduce(function(s,d){return s+d.total;},0)+' total tickets in period';
+  var footer='<div class="ca-legend" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">'+
+    '<div class="ca-leg"><div class="ca-leg-dot" style="background:#E24B4A"></div>Overloaded (≥'+thresh+')</div>'+
+    '<div class="ca-leg"><div class="ca-leg-dot" style="background:#EF9F27"></div>High ('+warnT+'–'+thresh+')</div>'+
+    '<div class="ca-leg"><div class="ca-leg-dot" style="background:#1D9E75"></div>Healthy (&lt;'+warnT+')</div>'+
+    '<div style="margin-left:auto;display:flex;gap:10px">'+
+      '<div style="display:flex;align-items:center;gap:4px;font-size:.7rem;color:var(--muted)"><span style="display:inline-block;width:1.5px;height:12px;background:var(--mango-500);opacity:.6"></span>Warn</div>'+
+      '<div style="display:flex;align-items:center;gap:4px;font-size:.7rem;color:var(--muted)"><span style="display:inline-block;width:1.5px;height:12px;background:var(--tomato-500);opacity:.8"></span>Flag</div>'+
+    '</div>'+
+  '</div>';
+
+  return'<div class="ca-chart-card">'+
+    '<div class="ca-chart-title">SE workload · period</div>'+
+    '<div class="ca-chart-sub">'+subtext+(overCount>0?' · '+overCount+' SE'+(overCount>1?'s':'')+' above threshold':'')+'</div>'+
+    rows+footer+'</div>';
+}
+
+// ════════════════════════════════════════════════════════════
+//  MANAGER OVERVIEW
+// ════════════════════════════════════════════════════════════
+
+function renderOverview(){
+  if(!S.mgrOverview){
+    if(!S.mgrOverviewLoadedAt){
+      return'<div class="ovw-loading"><div class="mini-spinner"></div> Loading overview — this may take up to 30 seconds the first time…</div>';
+    }
+    return'<div class="empty-state" style="padding:60px">Overview data unavailable. <button class="btn-primary" onclick="manualRefreshOverview()">Retry</button></div>';
+  }
+  var d=S.mgrOverview,sc=d.scorecards||{};
+  var t=getThreshold();
+  var ago=S.mgrOverviewLoadedAt?Math.round((Date.now()-S.mgrOverviewLoadedAt)/60000)+'m ago':'just now';
+  var header='<div class="ovw-header"><div><div class="ovw-month">'+d.monthLabel+' · Live Dashboard</div><div class="ovw-refresh">Last refreshed: '+ago+' · '+d.generatedAt.slice(0,19).replace('T',' ')+'</div></div><button class="btn-outline" onclick="manualRefreshOverview()">🔄 Refresh</button></div>';
+  var scorecards='<div class="scorecard-grid">'+
+    '<div class="sc-card sc-blue"><span class="sc-icon">🎫</span><div class="sc-label">Total this month</div><div class="sc-value">'+sc.total+'</div><div class="sc-sub">created in '+d.monthLabel+'</div></div>'+
+    '<div class="sc-card sc-yellow"><span class="sc-icon">📥</span><div class="sc-label">Backlog</div><div class="sc-value">'+sc.todo+'</div><div class="sc-sub">To Do — no action yet</div></div>'+
+    '<div class="sc-card sc-green"><span class="sc-icon">▶</span><div class="sc-label">Active</div><div class="sc-value">'+sc.ongoing+'</div><div class="sc-sub">In Progress / On Hold / Review</div></div>'+
+    '<div class="sc-card sc-teal"><span class="sc-icon">🔍</span><div class="sc-label">For Checking</div><div class="sc-value">'+sc.done+'</div><div class="sc-sub">Awaiting QA sign-off</div></div>'+
+    '<div class="sc-card sc-red"><span class="sc-icon">🔺</span><div class="sc-label">Escalated</div><div class="sc-value">'+sc.escalated+'</div><div class="sc-sub">For Product Team</div></div>'+
+    '<div class="sc-card sc-purple"><span class="sc-icon">👥</span><div class="sc-label">Overloaded SEs</div><div class="sc-value" style="color:'+(d.overloadedCount>0?'var(--tomato-600)':'var(--kangkong-600)')+'">'+d.overloadedCount+'</div><div class="sc-sub">score ≥ '+t.threshold+' (auto)</div></div>'+
+  '</div>';
+  var capacityHtml=renderCapacityTable(d.capacity||[]);
+  var priorityHtml=renderByPriority(d.byPriority||[]);
+  var fptHtml=renderFPTTable(d.fptTickets||[],d.fptTotal||0);
+  var trendHtml=renderWeeklyTrend(d.statsWeeklyTrend||{},d.weeks||[]);
+  return header+scorecards+capacityHtml+'<div class="split-col">'+priorityHtml+fptHtml+'</div>'+trendHtml;
+}
+
+function renderCapacityTable(capacity){
+  if(!capacity||!capacity.length)return'';
+  var t=getThreshold(),thresh=t.threshold,warnT=t.warnThreshold;
+  var baselineNote=t.fallback
+    ?'<div style="padding:8px 18px;font-size:.71rem;color:var(--muted);background:var(--surface2);border-bottom:1px solid var(--border)">⚠ Using default threshold — add more Stats history to auto-compute</div>'
+    :'<div style="padding:8px 18px;font-size:.71rem;color:var(--muted);border-bottom:1px solid var(--border)">📊 mean <strong>'+t.mean+'</strong> · σ <strong>'+t.stddev+'</strong> · warn at <strong>'+warnT+'</strong> · flag at <strong>'+thresh+'</strong></div>';
+  function scoreSignal(se){
+    var s=se.weightedScore||0;
+    if(s>=thresh)return'<span class="signal-pill signal-danger">🔴 '+s+'</span><div style="font-size:.67rem;color:var(--muted);margin-top:2px">flag ≥ '+thresh+'</div>';
+    if(s>=warnT) return'<span class="signal-pill signal-warn">🟡 '+s+'</span><div style="font-size:.67rem;color:var(--muted);margin-top:2px">warn ≥ '+warnT+'</div>';
+    return'<span class="signal-pill signal-ok">🟢 '+s+'</span><div style="font-size:.67rem;color:var(--muted);margin-top:2px">threshold: '+thresh+'</div>';
+  }
+  function slaSignal(se){
+    if(se.slaTotal<=0)return'<span style="color:var(--subtle);font-size:.75rem">No data</span>';
+    if(se.isOverloadedSLA)return'<span class="signal-pill signal-danger">🔴 '+fmt2dp(se.slaBreachPct)+'%</span>';
+    if(se.slaBreachPct>=CONFIG.OVERLOAD_SLA*0.7)return'<span class="signal-pill signal-warn">🟡 '+fmt2dp(se.slaBreachPct)+'%</span>';
+    return'<span class="signal-pill signal-ok">🟢 '+fmt2dp(se.slaBreachPct)+'%</span>';
+  }
+  function typeTooltip(se){var tb=se.typeBreakdown||{};return Object.keys(tb).map(function(k){return k+': '+tb[k];}).join(' | ')||'No breakdown';}
+  var rows=capacity.map(function(se){
+    return'<tr style="'+(se.isOverloaded?'background:rgba(239,68,68,.04)':'')+'">'+
+      '<td style="font-weight:600">'+se.name+(se.isOverloaded?' <span class="chip chip-red" style="font-size:.62rem">⚠ Overloaded</span>':se.isHighScore?' <span class="chip chip-yellow" style="font-size:.62rem">↑ High</span>':'')+'</td>'+
+      '<td title="'+typeTooltip(se)+'">'+scoreSignal(se)+'</td>'+
+      '<td style="font-weight:600;color:var(--blueberry-600)">'+(se.workedThisWeek||0)+'</td>'+
+      '<td>'+slaSignal(se)+'<div style="font-size:.67rem;color:var(--muted);margin-top:2px">'+(se.slaTotal>0?se.slaMet+'/'+se.slaTotal+' met':'—')+'</div></td>'+
+      '<td><span class="chip chip-blue">'+(se.inProgress||0)+'</span></td>'+
+      '<td><span class="chip chip-yellow">'+(se.onHold||0)+'</span></td>'+
+      '<td><span class="chip chip-purple">'+(se.forPeerReview||0)+'</span></td>'+
+      '<td style="font-size:.78rem;color:var(--muted)">'+(se.total||0)+'</td>'+
+    '</tr>';
+  }).join('');
+  return'<div class="section-card" style="margin-bottom:18px">'+
+    '<div class="section-header"><h3>🔥 Capacity &amp; Overload Signals</h3><span class="section-meta">Score = weighted sum by ticket type · hover score cell for type breakdown</span></div>'+
+    baselineNote+
+    '<div class="table-wrap"><table><thead><tr>'+
+      '<th>SE Member</th><th>Weighted Score</th><th>Worked This Week</th><th>SLA Breach %</th><th>In Progress</th><th>On Hold</th><th>For Peer Review</th><th>Total Open</th>'+
+    '</tr></thead><tbody>'+rows+'</tbody></table></div>'+
+    '<div style="padding:10px 18px;font-size:.72rem;color:var(--muted)">🔴 Flag: score ≥ '+thresh+' OR SLA breach ≥ '+CONFIG.OVERLOAD_SLA+'%&nbsp;&nbsp;&nbsp;🟡 Warn: score ≥ '+warnT+'&nbsp;&nbsp;&nbsp;📊 Auto-computed threshold</div>'+
+  '</div>';
+}
+
+function renderByPriority(byPriority){
+  if(!byPriority||!byPriority.length)return'<div class="section-card"><div class="empty-state">No priority data.</div></div>';
+  var max=Math.max.apply(null,byPriority.map(function(p){return p.count;}))||1;
+  var rows=byPriority.map(function(p){
+    return'<div class="bar-row">'+
+      '<div class="bar-label">'+p.label+'</div>'+
+      '<div class="bar-track"><div class="bar-fill" style="width:'+(p.count/max*100).toFixed(1)+'%;background:'+p.color+'"></div></div>'+
+      '<div class="bar-val">'+p.count+' ('+p.pct+'%)</div>'+
+    '</div>';
+  }).join('');
+  return'<div class="section-card"><div class="section-header"><h3>🎯 Open Tickets by Priority</h3></div><div class="bar-chart-inner">'+rows+'</div></div>';
+}
+
+function renderFPTTable(tickets,total){
+  var header='<div class="section-card"><div class="section-header"><h3>🔺 For Product Team — P1/P2</h3><span class="section-meta">'+total+' total</span></div>';
+  if(!tickets.length)return header+'<div class="empty-state">No P1/P2 tickets with FPT status.</div></div>';
+  var rows=tickets.map(function(t){
+    var pCls=t.priority==='P1'?'chip-p1':'chip-p2';
+    return'<tr>'+
+      '<td><a class="jira-key" href="'+t.url+'" target="_blank">'+t.key+'</a></td>'+
+      '<td style="max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+t.summary+'</td>'+
+      '<td><span class="chip '+pCls+'">'+t.priority+'</span></td>'+
+      '<td>'+t.assignedSE+'</td>'+
+      '<td><span class="chip '+(parseInt(t.timeInStatusMs)>172800000?'chip-red':'chip-yellow')+'">'+t.timeInStatusDisplay+'</span></td>'+
+    '</tr>';
+  }).join('');
+  return header+'<div class="table-wrap"><table><thead><tr><th>Key</th><th>Summary</th><th>Priority</th><th>Assigned SE</th><th>Time in FPT</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+}
+
+function renderWeeklyTrend(trend,weeks){
+  if(!weeks.length)return'';
+  var labels=weeks.map(function(w){return w.label;});
+  var slaData=labels.map(function(l){return trend[l]?trend[l].sla:null;});
+  var fcrData=labels.map(function(l){return trend[l]?trend[l].fcr:null;});
+  var volData=labels.map(function(l){return trend[l]?trend[l].volume:0;});
+  var cycleData=labels.map(function(l){return trend[l]?trend[l].avgCycleMins:null;});
+  var leadData=labels.map(function(l){return trend[l]?trend[l].avgLeadMins:null;});
+  function miniLine(data,color,width,height,format){
+    var vals=data.map(function(v){return v!==null?v:null;});
+    var validVals=vals.filter(function(v){return v!==null;});
+    if(!validVals.length)return'<div style="color:var(--subtle);font-size:.76rem">No data</div>';
+    var min=Math.min.apply(null,validVals),max=Math.max.apply(null,validVals);
+    var range=max-min||1;
+    var pts=vals.map(function(v,i){var x=(i/(vals.length-1||1))*width;var y=v!==null?(height-4)-((v-min)/range)*(height-8):null;return y!==null?(x.toFixed(1)+','+y.toFixed(1)):null;}).filter(Boolean).join(' ');
+    var dots=vals.map(function(v,i){if(v===null)return'';var x=(i/(vals.length-1||1))*width;var y=(height-4)-((v-min)/range)*(height-8);return'<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="3" fill="'+color+'"/><title>'+labels[i]+': '+(format?format(v):v)+'</title>';}).join('');
+    var lastVal=validVals[validVals.length-1];
+    var fmt=format?format(lastVal):(Math.round(lastVal*10)/10)+'%';
+    return'<svg viewBox="0 0 '+width+' '+height+'" style="display:block;width:100%"><polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linejoin="round"/>'+dots+'</svg><div style="font-size:.82rem;font-weight:700;color:'+color+';margin-top:2px">'+fmt+'</div>';
+  }
+  function fmtCycle(m){if(!m)return'—';var d=Math.floor(m/1440),h=Math.floor((m%1440)/60);return d?d+'d '+h+'h':h+'h';}
+  return'<div class="trend-grid">'+
+    '<div class="trend-panel"><div class="trend-panel-title">SLA Compliance</div><div class="trend-panel-avg">Weekly trend · target 95%</div>'+miniLine(slaData,'#1D9E75',300,52,function(v){return v.toFixed(1)+'%';})+'</div>'+
+    '<div class="trend-panel"><div class="trend-panel-title">FCR Rate</div><div class="trend-panel-avg">First Contact Resolution</div>'+miniLine(fcrData,'#378ADD',300,52,function(v){return v.toFixed(1)+'%';})+'</div>'+
+    '<div class="trend-panel"><div class="trend-panel-title">Volume Closed</div><div class="trend-panel-avg">Tickets resolved per week</div>'+miniLine(volData,'#7c3aed',300,52,function(v){return v+' tickets';})+'</div>'+
+    '<div class="trend-panel"><div class="trend-panel-title">Avg Cycle Time</div><div class="trend-panel-avg">Work time per ticket</div>'+miniLine(cycleData,'#EF9F27',300,52,fmtCycle)+'</div>'+
+  '</div>';
+}
+
+
+// ════════════════════════════════════════════════════════════
+//  PRODUCTIVITY
+// ════════════════════════════════════════════════════════════
+
+function renderProductivity(){
+  var today=getTodayStr(),sessions=(_prod.workLog&&_prod.workLog.sessions)?_prod.workLog.sessions:[];
+  var todaySessions=sessions.filter(function(s){return s.date===today&&(!isManager()||s.email===S.user.email);});
+  var curSession=todaySessions.length?todaySessions[0]:null;
+  var state=curSession?(curSession.complete?'ended':curSession.onBreak?'on_break':curSession.startTime?'started':'idle'):'idle';
+  function workBtn(action,label,cls){return'<button class="btn-primary" style="background:'+cls+';margin-right:8px" onclick="logWork(\''+action+'\')">'+label+'</button>';}
+  var actionBtns='';
+  if(state==='idle')actionBtns=workBtn('start','▶ Start Work','var(--kangkong-600)');
+  else if(state==='started')actionBtns=workBtn('break_out','☕ Break','var(--mango-600)')+workBtn('end','⏹ End Work','var(--tomato-600)');
+  else if(state==='on_break')actionBtns=workBtn('break_in','▶ Resume','var(--blueberry-600)')+workBtn('end','⏹ End Work','var(--tomato-600)');
+  else if(state==='ended')actionBtns='<span style="color:var(--kangkong-600);font-weight:600;font-size:.9rem">✅ Work session complete</span>';
+  var statusBadge=state==='idle'?'<span class="chip chip-gray">Idle</span>':state==='started'?'<span class="chip chip-green">Working</span>':state==='on_break'?'<span class="chip chip-yellow">On Break</span>':'<span class="chip chip-blue">Done</span>';
+  var sessionInfo='';
+  if(curSession){
+    sessionInfo='<div style="margin-top:12px;font-size:.82rem;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap">'+
+      (curSession.startTime?'<span>⏱ Started: <strong>'+curSession.startTime.slice(11,16)+'</strong></span>':'')+
+      (curSession.breakMins>0?'<span>☕ Break: <strong>'+fmtMinsHM(curSession.breakMins)+'</strong></span>':'')+
+      (curSession.workMins?'<span>✅ Work time: <strong>'+fmtMinsHM(curSession.workMins)+'</strong></span>':'')+
+    '</div>';
+  }
+  var isManager_=isManager();
+  var workHistory='';
+  var histSessions=isManager_?sessions:sessions.filter(function(s){return s.email===(S.user&&S.user.email);});
+  if(histSessions.length){
+    var rows=histSessions.slice(0,14).map(function(s){
+      return'<tr>'+
+        (isManager_?'<td style="font-size:.78rem">'+s.name+'</td>':'')+'<td>'+s.date+'</td>'+
+        '<td style="font-size:.78rem">'+(s.startTime?s.startTime.slice(11,16):'—')+'</td>'+
+        '<td style="font-size:.78rem">'+(s.endTime?s.endTime.slice(11,16):'—')+'</td>'+
+        '<td><span class="chip '+(s.breakMins>0?'chip-yellow':'chip-gray')+'">'+fmtMinsHM(s.breakMins)+'</span></td>'+
+        '<td>'+(s.workMins?'<strong>'+fmtMinsHM(s.workMins)+'</strong>':'<span style="color:var(--muted)">In progress</span>')+'</td>'+
+        '<td><span class="chip '+(s.complete?'chip-green':'chip-yellow')+'">'+(s.complete?'Complete':'Ongoing')+'</span></td>'+
+        '<td style="font-size:.76rem;color:var(--muted)">'+(s.notes||'')+'</td>'+
+      '</tr>';
+    }).join('');
+    var hh=(isManager_?'<th>Name</th>':'')+'<th>Date</th><th>Start</th><th>End</th><th>Break</th><th>Work Time</th><th>Status</th><th>Notes</th>';
+    workHistory='<div class="section-card" style="margin-top:18px"><div class="section-header"><h3>📋 Work Log History</h3></div><div class="table-wrap"><table><thead><tr>'+hh+'</tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+  }
+  var rtoHtml=renderRTO();
+  return'<div class="section-card" style="margin-bottom:18px">'+
+    '<div class="section-header"><h3>🕐 Today\'s Work Session</h3><div>'+statusBadge+'</div></div>'+
+    '<div style="padding:18px">'+
+      '<div style="margin-bottom:14px">'+actionBtns+'</div>'+sessionInfo+
+      '<div style="margin-top:14px"><label style="font-size:.75rem;font-weight:600;color:var(--muted);display:block;margin-bottom:5px">Notes (optional)</label>'+
+      '<input class="prod-input" id="work-notes" placeholder="Add any notes for this session…" style="max-width:400px"/></div>'+
+    '</div>'+
+  '</div>'+workHistory+rtoHtml;
+}
+
+function logWork(action){
+  var notes=(document.getElementById('work-notes')||{}).value||'';
+  var today=getTodayStr();
+  var params={action:'logworkentry',email:S.user.email,name:S.user.name,entry_type:action,session_id:today,notes:notes};
+  fetch(mwUrl(params)).then(function(r){return r.json();}).then(function(d){
+    if(!d.success)throw new Error(d.reason||'Log failed.');
+    return fetchProductivity();
+  }).then(function(){renderPage('productivity');}).catch(function(e){alert('Error: '+e.message);});
+}
+
+function renderRTO(){
+  var fridayStr=getLastFriday();
+  var hasFriday=isFriday();
+  var records=(_prod.rto&&_prod.rto.records)?_prod.rto.records:[];
+  var fridays=(_prod.rto&&_prod.rto.fridays)?_prod.rto.fridays:[];
+  var missedMap=(_prod.rto&&_prod.rto.missedMap)?_prod.rto.missedMap:{};
+  var myRecords=isManager()?records:records.filter(function(r){return r.email===(S.user&&S.user.email);});
+  var existingEntry=myRecords.find(function(r){return r.rtoDate===fridayStr;});
+  var RTO_OPTIONS=[{value:'8:00 AM',label:'8:00 AM'},{value:'8:30 AM',label:'8:30 AM'},
+    {value:'9:00 AM',label:'9:00 AM'},{value:'9:30 AM',label:'9:30 AM'},
+    {value:'10:00 AM',label:'10:00 AM'},{value:'10:30 AM',label:'10:30 AM'},
+    {value:'Other',label:'Other (specify in notes)'}];
+  var radioHtml=RTO_OPTIONS.map(function(o){return'<label class="rto-radio-label" id="rto-lbl-'+slugify(o.value)+'">'+'<input type="radio" name="rto-time" value="'+o.value+'" '+(existingEntry&&existingEntry.reportedTime===o.value?'checked':'')+' onchange="updateRTOSelection()"/>'+o.label+'</label>';}).join('');
+  var rtoForm='<div style="margin-bottom:18px">'+
+    '<div style="font-size:.84rem;font-weight:600;margin-bottom:8px">📅 RTO Log — '+fridayStr+(existingEntry?' <span class="chip chip-green" style="font-size:.68rem">✓ Logged</span>':'')+'</div>'+
+    '<div class="rto-radio-group" id="rto-radio-group">'+radioHtml+'</div>'+
+    '<div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">'+
+      '<input class="prod-input" id="rto-notes" placeholder="Notes (optional)" style="max-width:280px;flex:1" value="'+(existingEntry?existingEntry.notes:'')+'"/>'+
+      '<button class="btn-primary" onclick="submitRTO()">Save RTO</button>'+
+    '</div>'+
+  '</div>';
+  var rtoHistory='';
+  if(myRecords.length){
+    var histRows=myRecords.slice(0,8).map(function(r){
+      return'<tr>'+(isManager()?'<td style="font-size:.78rem">'+r.name+'</td>':'')+'<td>'+r.rtoDate+'</td><td style="font-weight:600">'+r.reportedTime+'</td><td style="font-size:.76rem;color:var(--muted)">'+r.notes+'</td></tr>';
+    }).join('');
+    var histHead=(isManager()?'<th>Name</th>':'')+'<th>Date</th><th>Reported Time</th><th>Notes</th>';
+    rtoHistory='<div class="table-wrap"><table><thead><tr>'+histHead+'</tr></thead><tbody>'+histRows+'</tbody></table></div>';
+  }
+  var missedHtml='';
+  if(isManager()&&fridays.length){
+    var mRows=fridays.slice(0,4).map(function(fri){var missed=missedMap[fri]||[];return'<tr><td>'+fri+'</td><td>'+(missed.length?'<span class="chip chip-red">'+missed.length+' missing</span>':'<span class="chip chip-green">All submitted</span>')+'</td><td style="font-size:.76rem;color:var(--muted)">'+missed.join(', ')+'</td></tr>';}).join('');
+    missedHtml='<div class="section-card" style="margin-top:18px"><div class="section-header"><h3>📊 RTO Compliance</h3></div><div class="table-wrap"><table><thead><tr><th>Friday</th><th>Status</th><th>Missing</th></tr></thead><tbody>'+mRows+'</tbody></table></div></div>';
+  }
+  return'<div class="section-card" style="margin-top:18px">'+
+    '<div class="section-header"><h3>🏢 RTO Log</h3><span class="section-meta">Friday return-to-office tracking</span></div>'+
+    '<div style="padding:18px">'+(hasFriday||existingEntry?rtoForm:'<div style="font-size:.83rem;color:var(--muted)">RTO logging is available on Fridays. Last logged Friday: '+fridayStr+'</div>')+rtoHistory+'</div>'+
+  '</div>'+missedHtml;
+}
+
+function updateRTOSelection(){document.querySelectorAll('.rto-radio-label').forEach(function(lbl){lbl.classList.toggle('selected',lbl.querySelector('input[type=radio]').checked);});}
+function submitRTO(){
+  var timeEl=document.querySelector('input[name="rto-time"]:checked');
+  if(!timeEl){alert('Please select a reported time.');return;}
+  var notes=(document.getElementById('rto-notes')||{}).value||'';
+  fetch(mwUrl({action:'logrto',email:S.user.email,name:S.user.name,rto_date:getLastFriday(),reported_time:timeEl.value,notes:notes})).then(function(r){return r.json();}).then(function(d){if(!d.success)throw new Error(d.reason||'Failed.');return fetchProductivity();}).then(function(){renderPage('productivity');}).catch(function(e){alert('Error: '+e.message);});
+}
+
+// ════════════════════════════════════════════════════════════
+//  SE MEMBER PAGES
+// ════════════════════════════════════════════════════════════
+
+function renderMyTickets(){
+  var tickets=S.stTickets||[];
+  if(!tickets.length)return'<div class="section-card"><div class="empty-state">No open tickets found for your account.</div></div>';
+  var byStatus={};
+  tickets.forEach(function(t){var k=t.status||'Other';if(!byStatus[k])byStatus[k]=[];byStatus[k].push(t);});
+  var ORDER=['In Progress','On Hold','For Peer Review','To Do','Open','Backlog','New'];
+  var html='';
+  ORDER.forEach(function(s){
+    if(!byStatus[s]||!byStatus[s].length)return;
+    html+='<div class="section-card"><div class="section-header"><h3>'+statusChip(s)+'<span style="margin-left:8px">'+s+'</span></h3><span class="section-meta">'+byStatus[s].length+' ticket'+(byStatus[s].length>1?'s':'')+'</span></div><div class="jira-widget">';
+    byStatus[s].forEach(function(t){
+      html+='<div class="'+attentionCls(t)+'">'+
+        '<a class="jira-key" href="'+t.url+'" target="_blank">'+t.key+'</a>'+
+        '<div style="flex:1;min-width:0">'+
+          '<div class="jira-summary">'+t.summary+'</div>'+
+          '<div class="jira-meta">'+prioChip(t.priority)+statusChip(t.status)+(t.issueType?'<span class="chip chip-gray">'+t.issueType+'</span>':'')+dueBadge(t)+(t.product&&t.product!=='—'?'<span style="font-size:.71rem;color:var(--subtle)">'+t.product+'</span>':'')+'</div>'+
+        '</div>'+
+        '<div style="font-size:.72rem;color:var(--subtle);white-space:nowrap;flex-shrink:0">'+fmtDate(t.updated)+'</div>'+
+      '</div>';
+    });
+    html+='</div></div>';
+  });
+  return html||'<div class="section-card"><div class="empty-state">No tickets found.</div></div>';
+}
+
+function renderFlagged(){
+  var flagged=S.flaggedTickets||[];
+  if(!flagged.length)return'<div class="section-card"><div class="empty-state" style="padding:60px">🎉 No tickets need updates right now.</div></div>';
+  var html='<div class="flag-banner yellow"><span class="ico">⚠️</span><div><h4>'+flagged.length+' ticket'+(flagged.length>1?'s need':'needs')+' your attention</h4><p>These tickets have new replies or linked updates waiting for your action.</p></div></div>';
+  html+='<div class="section-card"><div class="jira-widget">';
+  flagged.forEach(function(t){
+    var flags=t.flags||[];
+    var hasComment=flags.some(function(f){return f.type==='comment';});
+    var linkedFlags=flags.filter(function(f){return f.type==='linked';});
+    var rowCls=hasComment&&linkedFlags.length?'jira-row flagged':hasComment?'jira-row flagged':linkedFlags.length?'jira-row flagged-linked':'jira-row';
+    html+='<div class="'+rowCls+'">'+
+      '<a class="jira-key" href="'+t.url+'" target="_blank">'+t.key+'</a>'+
+      '<div style="flex:1;min-width:0">'+
+        '<div class="jira-summary">'+t.summary+'</div>'+
+        '<div class="jira-meta">'+prioChip(t.priority)+statusChip(t.status)+
+          (hasComment?'<span class="flag-pill flag-comment">💬 New Feedback</span>':'')+
+          linkedFlags.map(function(f){return'<span class="flag-pill flag-linked">'+f.label+'</span>';}).join('')+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  });
+  html+='</div></div>';
+  return html;
+}
+
+function renderBacklog(){
+  var b=S.backlog||{backend:[],investigation:[]};
+  var all=b.backend.concat(b.investigation);
+  if(!all.length)return'<div class="section-card"><div class="empty-state">No unassigned backlog tickets.</div></div>';
+  var overdue=all.filter(function(t){return t.isOverdue;});
+  var dueBanner=overdue.length?'<div class="flag-banner yellow"><span class="ico">⚠️</span><div><h4>'+overdue.length+' overdue backlog ticket'+(overdue.length>1?'s':'')+'</h4><p>These items have passed their due date and need urgent assignment.</p></div></div>':'';
+  function section(title,tickets){
+    if(!tickets.length)return'';
+    var rows=tickets.map(function(t){
+      return'<div class="'+attentionCls(t)+'">'+
+        '<a class="jira-key" href="'+t.url+'" target="_blank">'+t.key+'</a>'+
+        '<div style="flex:1;min-width:0">'+
+          '<div class="jira-summary">'+t.summary+'</div>'+
+          '<div class="jira-meta">'+prioChip(t.priority)+'<span class="chip chip-gray">'+t.issueType+'</span>'+dueBadge(t)+(t.product&&t.product!=='—'?'<span style="font-size:.71rem;color:var(--subtle)">'+t.product+'</span>':'')+'</div>'+
+        '</div>'+
+        '<div style="font-size:.72rem;color:var(--subtle);white-space:nowrap;flex-shrink:0">'+fmtDate(t.updated)+'</div>'+
+      '</div>';
+    }).join('');
+    return'<div class="section-card"><div class="section-header"><h3>'+title+'</h3><span class="section-meta">'+tickets.length+' tickets</span></div><div class="jira-widget">'+rows+'</div></div>';
+  }
+  return dueBanner+section('🔧 Backend Backlog',b.backend)+section('🔍 Investigation Backlog',b.investigation);
+}
+
+// ════════════════════════════════════════════════════════════
+//  STATS
+// ════════════════════════════════════════════════════════════
+
+function renderStats(){
+  var st=S.stats;
+  if(!st)return'<div class="section-card"><div class="empty-state">Loading stats…</div></div>';
+  var periods=S.availablePeriods||[];
+  var members=S.availableMembers||[];
+  var filterBar='<div class="filter-bar">'+
+    '<label style="font-size:.75rem;font-weight:600;color:var(--muted)">Period</label>'+
+    '<select id="sf-period" class="filter-select" onchange="applyStatsFilter()">'+
+      '<option value="all"'+(S.statsFilters.period==='all'?' selected':'')+'>All time</option>'+
+      periods.map(function(p){return'<option value="'+p+'"'+(S.statsFilters.period===p?' selected':'')+'>'+p+'</option>';}).join('')+
+    '</select>'+
+    (isManager()?'<label style="font-size:.75rem;font-weight:600;color:var(--muted)">Member</label><select id="sf-member" class="filter-select" onchange="applyStatsFilter()"><option value="all"'+(S.statsFilters.member==='all'?' selected':'')+'>All members</option>'+members.map(function(m){return'<option value="'+m+'"'+(S.statsFilters.member===m?' selected':'')+'>'+m+'</option>';}).join('')+'</select>':'')+
+  '</div>';
+  var CARD_COLORS={sla:'sc-green',fcr:'sc-blue',lead:'sc-yellow',cycle:'sc-teal',ip:'sc-blue',oh:'sc-yellow',fpr:'sc-purple'};
+  var scorecard='<div class="scorecard-grid" id="stats-scorecard">'+
+    '<div class="sc-card '+CARD_COLORS.sla+'"><span class="sc-icon">✅</span><div class="sc-label">SLA Compliance</div><div class="sc-value">'+st.slaCompliance+'%</div><div class="sc-sub">'+st.slaMet+'/'+st.totalTickets+' tickets</div></div>'+
+    '<div class="sc-card '+CARD_COLORS.fcr+'"><span class="sc-icon">🎯</span><div class="sc-label">FCR Rate</div><div class="sc-value">'+st.fcrRate+'%</div><div class="sc-sub">First contact resolution</div></div>'+
+    '<div class="sc-card '+CARD_COLORS.lead+'"><span class="sc-icon">📏</span><div class="sc-label">Avg Lead Time</div><div class="sc-value" style="font-size:1.1rem">'+st.avgLeadTime+'</div><div class="sc-sub">Pickup to resolution</div></div>'+
+    '<div class="sc-card '+CARD_COLORS.cycle+'"><span class="sc-icon">⏱</span><div class="sc-label">Avg Cycle Time</div><div class="sc-value" style="font-size:1.1rem">'+st.avgCycleTime+'</div><div class="sc-sub">Work time per ticket</div></div>'+
+    '<div class="sc-card '+CARD_COLORS.ip+'"><span class="sc-icon">▶</span><div class="sc-label">In Progress</div><div class="sc-value">'+st.inProgress+'</div><div class="sc-sub">Live Jira count</div></div>'+
+    '<div class="sc-card '+CARD_COLORS.oh+'"><span class="sc-icon">⏸</span><div class="sc-label">On Hold</div><div class="sc-value">'+st.onHold+'</div><div class="sc-sub">Awaiting customer</div></div>'+
+    '<div class="sc-card '+CARD_COLORS.fpr+'"><span class="sc-icon">👀</span><div class="sc-label">For Peer Review</div><div class="sc-value">'+st.forPeerReview+'</div><div class="sc-sub">Peer review queue</div></div>'+
+  '</div>';
+  var volCard='<div class="section-card"><div class="section-header"><h3>📈 Volume</h3></div>'+
+    '<div style="padding:18px;display:flex;align-items:flex-end;gap:28px;flex-wrap:wrap">'+
+      '<div class="vol-bar-group"><div class="vol-bar" style="height:'+Math.max(8,Math.min(80,st.thisMonthCount*3))+'px;background:var(--kangkong-600)"></div><div class="vol-count">'+st.thisMonthCount+'</div><div class="vol-label">This month</div></div>'+
+      '<div class="vol-bar-group"><div class="vol-bar" style="height:'+Math.max(8,Math.min(80,st.lastMonthCount*3))+'px;background:var(--mushroom-300)"></div><div class="vol-count">'+st.lastMonthCount+'</div><div class="vol-label">Last month</div></div>'+
+    '</div></div>';
+  var labelHtml='';
+  if(st.topLabels&&st.topLabels.length){
+    var lRows=st.topLabels.map(function(l){return'<span class="chip chip-gray">'+l.label+'<span style="margin-left:4px;font-weight:700;color:var(--mushroom-700)">'+l.count+'</span></span>';}).join('');
+    labelHtml='<div class="section-card"><div class="section-header"><h3>🏷 Top Labels</h3></div><div style="padding:14px 18px"><div class="label-chip-row">'+lRows+'</div></div></div>';
+  }
+  var recentHtml='';
+  if(st.recentResolved&&st.recentResolved.length){
+    var rRows=st.recentResolved.map(function(r){return'<div class="recent-row"><a class="jira-key" href="'+r.url+'" target="_blank">'+r.key+'</a><span class="chip chip-gray" style="font-size:.7rem">'+r.issueType+'</span><span style="flex:1;font-size:.78rem;color:var(--muted)">'+r.product+'</span><span style="font-size:.74rem;color:var(--subtle)">'+r.resolved+'</span></div>';}).join('');
+    recentHtml='<div class="section-card"><div class="section-header"><h3>✅ Recently Resolved</h3></div><div style="padding:4px 18px">'+rRows+'</div></div>';
+  }
+  var typeHtml='';
+  if(st.countByType){
+    var ct=st.countByType;
+    typeHtml='<div class="section-card"><div class="section-header"><h3>🗂 Ticket Types</h3></div>'+
+      '<div style="padding:14px 18px;display:flex;gap:12px;flex-wrap:wrap">'+
+        '<div style="text-align:center;padding:10px 16px;background:var(--surface2);border-radius:var(--radius)"><div style="font-size:1.2rem;font-weight:700">'+ct.investigation+'</div><div style="font-size:.7rem;color:var(--muted)">Investigation</div></div>'+
+        '<div style="text-align:center;padding:10px 16px;background:var(--surface2);border-radius:var(--radius)"><div style="font-size:1.2rem;font-weight:700">'+ct.backend+'</div><div style="font-size:.7rem;color:var(--muted)">Backend</div></div>'+
+        '<div style="text-align:center;padding:10px 16px;background:var(--surface2);border-radius:var(--radius)"><div style="font-size:1.2rem;font-weight:700">'+ct.reports+'</div><div style="font-size:.7rem;color:var(--muted)">Reports</div></div>'+
+        '<div style="text-align:center;padding:10px 16px;background:var(--surface2);border-radius:var(--radius)"><div style="font-size:1.2rem;font-weight:700">'+ct.internalTasks+'</div><div style="font-size:.7rem;color:var(--muted)">Tasks</div></div>'+
+      '</div></div>';
+  }
+  var tisHtml=renderTISStats();
+  return filterBar+scorecard+'<div class="split-col">'+volCard+labelHtml+'</div>'+recentHtml+typeHtml+tisHtml;
+}
+
+function renderTISStats(){
+  var data=isManager()?null:_seTISStats;
+  if(!data)return'';
+  if(data.error)return'<div class="section-card"><div class="empty-state">TIS data unavailable.</div></div>';
+  var STATUSES=['In Progress','On Hold','For Peer Review','For Checking'];
+  var STATUS_COLORS={'In Progress':'#378ADD','On Hold':'#EF9F27','For Peer Review':'#7c3aed','For Checking':'#1D9E75'};
+  var avgRows=STATUSES.map(function(s){
+    var mins=data.avgByStatus[s];if(!mins)return'';
+    var color=STATUS_COLORS[s]||'#888780';
+    var cls=mins<60*CONFIG.TIS_THRESHOLDS.fast?'tis-fast':mins<60*CONFIG.TIS_THRESHOLDS.slow?'tis-mid':'tis-slow';
+    return'<div class="bar-row">'+
+      '<div class="bar-label" style="color:'+color+'">'+s+'</div>'+
+      '<div class="bar-track"><div class="bar-fill" style="width:'+Math.min(mins/180*100,100).toFixed(1)+'%;background:'+color+'"></div></div>'+
+      '<div class="bar-val"><span class="tis-pill '+cls+'">'+fmtMinsHM(mins)+'</span></div>'+
+    '</div>';
+  }).filter(Boolean).join('');
+  var candidates=data.candidates||[];
+  var candHtml=candidates.length?candidates.map(function(c){
+    var pcts=STATUSES.map(function(s){var m=c.statusAvgMins[s]||0;return{status:s,mins:m,pct:c.avgTotalMins>0?Math.min(m/c.avgTotalMins*100,100).toFixed(1):0,color:STATUS_COLORS[s]||'#888780'};});
+    return'<div class="improve-card '+(c.avgTotalMins>60*CONFIG.TIS_THRESHOLDS.slow?'flag-red':'flag-yellow')+'">'+
+      '<div class="ic-header"><div><div class="ic-title">'+c.issueType+'</div><div class="ic-meta">'+(c.label!=='(no label)'?c.label:'')+'</div></div>'+
+      '<div><div class="ic-stat-val">'+fmtMinsHM(c.avgTotalMins)+'</div><div class="ic-stat-label">avg total</div></div></div>'+
+      pcts.filter(function(p){return p.mins>0;}).map(function(p){return'<div class="ic-bar-row"><div class="ic-bar-label">'+p.status+'</div><div class="ic-bar-track"><div class="ic-bar-fill" style="width:'+p.pct+'%;background:'+p.color+'"></div></div><div class="ic-bar-val">'+fmtMinsHM(p.mins)+'</div></div>';}).join('')+
+    '</div>';
+  }).join(''):'<div style="color:var(--subtle);font-size:.82rem">No patterns identified yet.</div>';
+  return'<div class="section-card"><div class="section-header"><h3>⏱ Time in Status</h3><span class="section-meta">Average time spent per status</span></div>'+
+    '<div class="bar-chart-inner">'+avgRows+'</div></div>'+
+    (candidates.length?'<div class="section-card"><div class="section-header"><h3>🔍 Longest-Hanging Issue Types</h3></div><div style="padding:14px 18px"><div class="improve-grid">'+candHtml+'</div></div></div>':'');
+}
+
+
+// ════════════════════════════════════════════════════════════
+//  INCIDENTS
+// ════════════════════════════════════════════════════════════
+
+function renderIncidents(){
+  var incidents=S.incidents||[];
+  var years=S.incidentYears||[];
+  var yearMonthWeekMap=S.yearMonthWeekMap||{};
+  var selYear=(document.getElementById('inc-year')||{}).value||'all';
+  var selMW=(document.getElementById('inc-mw')||{}).value||'all';
+  var filtered=incidents.filter(function(inc){
+    if(selYear!=='all'&&inc.year!==selYear)return false;
+    if(selMW!=='all'&&inc.monthWeek!==selMW)return false;
+    return true;
+  });
+  var yearOpts='<option value="all">All years</option>'+years.map(function(y){return'<option value="'+y+'"'+(selYear===y?' selected':'')+'>'+y+'</option>';}).join('');
+  var mwSet=selYear!=='all'&&yearMonthWeekMap[selYear]?yearMonthWeekMap[selYear]:S.incidentMonthWeeks||[];
+  var mwOpts='<option value="all">All weeks</option>'+mwSet.map(function(mw){return'<option value="'+mw+'"'+(selMW===mw?' selected':'')+'>'+mw+'</option>';}).join('');
+  var filterBar='<div class="filter-bar">'+
+    '<label style="font-size:.75rem;font-weight:600;color:var(--muted)">Year</label>'+
+    '<select id="inc-year" class="filter-select" onchange="renderPage(\'incidents\')">'+yearOpts+'</select>'+
+    '<label style="font-size:.75rem;font-weight:600;color:var(--muted)">Month/Week</label>'+
+    '<select id="inc-mw" class="filter-select" onchange="renderPage(\'incidents\')">'+mwOpts+'</select>'+
+    '<span style="font-size:.72rem;color:var(--muted)">'+filtered.length+' incident'+(filtered.length!==1?'s':'')+'</span>'+
+  '</div>';
+  if(!filtered.length)return filterBar+'<div class="section-card"><div class="empty-state">No incidents for selected period.</div></div>';
+  var grouped={};
+  filtered.forEach(function(inc){var k=inc.category||'Uncategorized';if(!grouped[k])grouped[k]=[];grouped[k].push(inc);});
+  var html=filterBar;
+  Object.keys(grouped).sort().forEach(function(cat){
+    var items=grouped[cat];
+    var rows=items.map(function(inc){
+      return'<div class="inc-row">'+
+        '<div class="inc-key-col"><a class="jira-key" href="'+inc.url+'" target="_blank">'+inc.key+'</a>'+
+          '<div style="margin-top:4px;display:flex;flex-direction:column;gap:3px">'+
+            (inc.type?'<span class="chip '+(inc.type.toLowerCase().includes('kudos')?'chip-green':inc.type.toLowerCase().includes('escalat')?'chip-red':'chip-yellow')+'" style="font-size:.64rem">'+inc.type+'</span>':'')+
+          '</div>'+
+        '</div>'+
+        '<div class="inc-body">'+
+          '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px">'+
+            (inc.issueType?'<span class="chip chip-gray" style="font-size:.7rem">'+inc.issueType+'</span>':'')+
+            (inc.monthWeek?'<span style="font-size:.7rem;color:var(--muted)">'+inc.monthWeek+'</span>':'')+
+            (isManager()&&inc.assignedSE?'<span style="font-size:.7rem;font-weight:600">'+inc.assignedSE+'</span>':'')+
+          '</div>'+
+          (inc.feedback?'<div class="inc-feedback">'+inc.feedback+'</div>':'')+
+          (inc.doc?'<a href="'+inc.doc+'" target="_blank" class="inc-doc-link">📄 Process doc</a>':'')+
+        '</div>'+
+      '</div>';
+    }).join('');
+    html+='<div class="section-card"><div class="section-header"><h3>'+cat+'</h3><span class="section-meta">'+items.length+'</span></div>'+rows+'</div>';
+  });
+  return html;
+}
+
+// ════════════════════════════════════════════════════════════
+//  ANALYTICS (Manager)
+// ════════════════════════════════════════════════════════════
+
+function computeTIS(){if(S.stTickets){S.analytics=S.analytics||{};}}
+function buildAnalyticsFromTickets(tickets){
+  var byStatus={},bySE={};
+  tickets.forEach(function(t){
+    var s=t.status||'Other';if(!byStatus[s])byStatus[s]=0;byStatus[s]++;
+    var se=t.assignedSE||t.assigneeName||'Unassigned';if(!bySE[se])bySE[se]={total:0};bySE[se].total++;
+  });
+  return{teamStats:{byStatus:byStatus,bySE:bySE,totalOpen:tickets.length}};
+}
+
+function renderAnalytics(){
+  var data=getAnalytics();
+  if(!data)return'<div class="section-card"><div class="empty-state">Loading analytics…</div></div>';
+  var byStatus=data.byStatus||{};
+  var bySE=data.bySE||{};
+  var totalOpen=data.totalOpen||0;
+  var ORDER=['In Progress','On Hold','For Peer Review','To Do','Backlog','Open','New','For Checking','For Product Team'];
+  var statusHtml='<div class="section-card"><div class="section-header"><h3>📊 Open Tickets by Status</h3><span class="section-meta">'+totalOpen+' total open</span></div><div class="bar-chart-inner">';
+  var statusMax=Math.max.apply(null,Object.values(byStatus).concat([1]));
+  ORDER.concat(Object.keys(byStatus).filter(function(k){return ORDER.indexOf(k)===-1;})).forEach(function(s){
+    var v=byStatus[s];if(!v)return;
+    var col=s==='In Progress'?'var(--blueberry-500)':s==='On Hold'?'var(--tomato-500)':s==='For Peer Review'?'var(--lavender-600)':s==='For Checking'?'var(--mango-500)':'var(--mushroom-400)';
+    statusHtml+='<div class="bar-row"><div class="bar-label">'+s+'</div><div class="bar-track"><div class="bar-fill" style="width:'+(v/statusMax*100).toFixed(1)+'%;background:'+col+'"></div></div><div class="bar-val">'+v+'</div></div>';
+  });
+  statusHtml+='</div></div>';
+  var seEntries=Object.keys(bySE).map(function(k){return{name:k,total:bySE[k].total};}).sort(function(a,b){return b.total-a.total;});
+  var seMax=seEntries.length?seEntries[0].total:1;
+  var t=getThreshold(),thresh=t.threshold,warnT=t.warnThreshold;
+  var seHtml='<div class="section-card"><div class="section-header"><h3>👥 Open Tickets per SE</h3></div><div class="bar-chart-inner">';
+  seEntries.forEach(function(se){
+    var col=se.total>=thresh?'var(--tomato-500)':se.total>=warnT?'var(--mango-500)':'var(--kangkong-600)';
+    seHtml+='<div class="bar-row"><div class="bar-label">'+se.name.split(' ')[0]+'</div><div class="bar-track"><div class="bar-fill" style="width:'+(se.total/seMax*100).toFixed(1)+'%;background:'+col+'"></div></div><div class="bar-val">'+se.total+'</div></div>';
+  });
+  seHtml+='</div></div>';
+  return'<div class="split-col">'+statusHtml+seHtml+'</div>';
+}
+
+// ════════════════════════════════════════════════════════════
+//  EVALUATIONS, REPORTING, REFERENCES
+// ════════════════════════════════════════════════════════════
+
+function renderEvaluations(){
+  return'<div class="section-card"><div class="section-header"><h3>⭐ Evaluations</h3></div>'+
+    '<div style="padding:32px 18px;text-align:center;color:var(--muted)">'+
+      '<div style="font-size:2rem;margin-bottom:12px">📋</div>'+
+      '<div style="font-weight:600;margin-bottom:6px">Coming soon</div>'+
+      '<div style="font-size:.82rem">Performance evaluation forms and results will appear here.</div>'+
+    '</div></div>';
+}
+
+function renderReporting(){
+  if(!isManager())return'<div class="section-card"><div class="empty-state">Access restricted.</div></div>';
+  var d=S.mgrOverview;
+  if(!d)return'<div class="section-card"><div class="empty-state">Load the overview first.</div></div>';
+  var csv='SE Member,Weighted Score,Score Status,SLA Breach %,In Progress,On Hold,For Review,Total Open,Worked This Week\n';
+  (d.capacity||[]).forEach(function(c){csv+='"'+c.name+'",'+c.weightedScore+','+c.scoreStatus+','+Math.max(0,c.slaBreachPct).toFixed(2)+','+c.inProgress+','+c.onHold+','+c.forPeerReview+','+c.total+','+c.workedThisWeek+'\n';});
+  var blob='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  return'<div class="section-card"><div class="section-header"><h3>📋 Reports</h3><a href="'+blob+'" download="capacity-report.csv" class="btn-primary">⬇ Download CSV</a></div>'+
+    '<div style="padding:18px;font-size:.82rem;color:var(--muted)">Capacity report · '+d.monthLabel+' · '+d.generatedAt.slice(0,10)+'</div>'+
+    '<div class="table-wrap"><table><thead><tr><th>SE Member</th><th>Score</th><th>Status</th><th>SLA Breach%</th><th>In Progress</th><th>On Hold</th><th>For Review</th><th>Total Open</th><th>Worked/Week</th></tr></thead><tbody>'+
+    (d.capacity||[]).map(function(c){return'<tr><td>'+c.name+'</td><td style="font-weight:700;color:'+scoreColor(c.weightedScore||0)+'">'+c.weightedScore+'</td><td><span class="chip '+(c.scoreStatus==='overloaded'?'chip-red':c.scoreStatus==='high'?'chip-yellow':'chip-green')+'">'+c.scoreStatus+'</span></td><td>'+Math.max(0,c.slaBreachPct).toFixed(1)+'%</td><td>'+c.inProgress+'</td><td>'+c.onHold+'</td><td>'+c.forPeerReview+'</td><td>'+c.total+'</td><td>'+c.workedThisWeek+'</td></tr>';}).join('')+
+    '</tbody></table></div></div>';
+}
+
+function renderReferences(){
+  var refs=CONFIG.REFERENCE_LINKS||[];
+  if(!refs.length)return'<div class="section-card"><div class="empty-state">No reference links loaded yet.</div></div>';
+  var groups={};
+  refs.forEach(function(r){var g=r.tag||'Other';if(!groups[g])groups[g]=[];groups[g].push(r);});
+  var html='';
+  Object.keys(groups).sort().forEach(function(g){
+    var items=groups[g];
+    html+='<div class="ref-section"><div class="ref-section-header"><span class="ref-section-title">'+g+'</span><span class="ref-section-count">'+items.length+'</span></div><div class="ref-grid">'+
+      items.map(function(r){return'<a class="ref-card" href="'+r.url+'" target="_blank"><div class="ref-icon-wrap">'+(r.icon||tagIcon(r.tag||''))+'</div><div><div class="ref-name">'+r.name+'</div><div class="ref-desc">'+r.description+'</div><span class="ref-tag">'+r.tag+'</span></div></a>';}).join('')+
+    '</div></div>';
+  });
+  return html;
+}
+
+// ════════════════════════════════════════════════════════════
+//  DEMO DATA
+// ════════════════════════════════════════════════════════════
+
+function demoSTTickets(){return[{key:'ST-001',summary:'Account sync issue with LMS',status:'In Progress',priority:'P2 (Urgent)',issueType:'Investigation',labels:[],product:'Payroll',assignedSE:'Demo User',updated:new Date().toISOString(),url:'#',isOverdue:false,isDueToday:false,isDueSoon:false}];}
+function demoFlagged(){return[];}
+function demoIncidents(){return[];}
+function demoStats(){return{slaCompliance:94,slaMet:47,totalTickets:50,avgLeadTime:'2d 4h',avgLeadMins:3120,avgCycleTime:'1d 6h',avgCycleMins:1800,fcrRate:88,inProgress:3,onHold:1,forPeerReview:2,topLabels:[],thisMonthCount:12,lastMonthCount:10,recentResolved:[],tisAvg:{},slowestTickets:[],monthYears:[],quarterYears:[],members:[],countByType:{backend:5,investigation:8,reports:3,internalTasks:4},appliedPeriod:'all',currentMonthLabel:''};}
+function demoAnalytics(){return{teamStats:{byStatus:{'In Progress':8,'On Hold':4,'For Peer Review':3,'To Do':12},bySE:{},totalOpen:27}};}
+
+</script>
+
+<!-- ─── App Shell ─────────────────────────────────────────── -->
+<div id="login-screen"></div>
+
+<div id="app" style="display:none">
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-head">
+        <div class="sb-logo-wrap">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+        </div>
+        <div>
+          <div class="sb-title">SE Portal</div>
+          <div class="sb-subtitle" id="sidebar-role-label">Loading…</div>
+        </div>
+      </div>
+      <div class="sidebar-nav" id="sidebar-nav"></div>
+      <div class="sidebar-user">
+        <div class="user-row">
+          <div class="avatar" id="user-avatar">?</div>
+          <div>
+            <div class="user-name" id="user-name-label">—</div>
+            <div class="user-role" id="user-role-label">—</div>
+          </div>
+        </div>
+        <button class="btn-signout" onclick="logout()">Sign out</button>
+      </div>
+    </nav>
+
+    <!-- Sidebar overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+
+    <!-- Main content -->
+    <div class="main" id="main-content">
+      <div class="topbar">
+        <div style="display:flex;align-items:center;gap:10px;min-width:0">
+          <button class="mobile-menu-btn" id="mobile-menu-btn" onclick="toggleMobileSidebar()">☰</button>
+          <h1 id="topbar-title">Dashboard</h1>
+        </div>
+        <div class="topbar-right">
+          <span class="badge-role" id="topbar-badge">—</span>
+          <button class="btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+          <button class="btn-icon" id="refresh-btn" onclick="refreshAll()" title="Refresh data">🔄</button>
+        </div>
+      </div>
+      <div class="content">
+        <div id="page-container"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
